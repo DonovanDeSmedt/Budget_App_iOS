@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate{
+class AddViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate,UIPopoverPresentationControllerDelegate, ColorPickerDelegate{
 
     //    ========================================
     //    UIVariables
@@ -20,8 +20,16 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var btnAddCat: UIButton!
     @IBOutlet weak var btnAddSubCat: UIButton!
+
+    @IBOutlet weak var colorPreview: UIView!
     
     @IBOutlet weak var txfAmount: UITextField!
+    
+    
+    
+    // class varible maintain selected color value
+    var selectedColor: UIColor = UIColor.blue
+    var selectedColorHex: String = "0000FF"
     
     var pickOptionCat = ["cat1", "cat2", "cat3", "cat4", "cat5"]
     var pickOptionSubCat = ["subcat1", "subcat2", "subcat3", "subcat4", "subcat5"]
@@ -41,9 +49,18 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboard()
+        
+        // set corner radious
+        self.colorPreview.layer.cornerRadius = self.colorPreview.layer.frame.width/6
+        // set default background color
+        self.colorPreview.backgroundColor = self.selectedColor
+        let gesture = UITapGestureRecognizer(target: self, action:  #selector (openColorPicker(_:)))
+        self.colorPreview.addGestureRecognizer(gesture)
+        
+        
         btnAddCat.addTarget(self, action:#selector(addCatTapped(_:)), for: .touchUpInside)
         btnAddSubCat.addTarget(self, action:#selector(addCatTapped(_:)), for: .touchUpInside)
-        
+    
         datePickerView.datePickerMode = UIDatePickerMode.date
         datePickerView.addTarget(self, action: #selector(AddViewController.datePickerValueChanged), for: UIControlEvents.valueChanged)
         
@@ -54,7 +71,63 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         txfSubcategory.inputView = subCatPickerview
         txfDate.inputView = datePickerView
     }
+    // Override iPhone behavior that presents a popover as fullscreen.
+    // i.e. now it shows same popover box within on iPhone & iPad
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        
+        // show popover box for iPhone and iPad both
+        return UIModalPresentationStyle.none
+    }
+    // MARK: Color picker delegate functions
     
+    // called by color picker after color selected.
+    func colorPickerDidColorSelected(selectedUIColor: UIColor, selectedHexColor: String) {
+        
+        // update color value within class variable
+        self.selectedColor = selectedUIColor
+        self.selectedColorHex = selectedHexColor
+        
+        // set preview background to selected color
+        self.colorPreview.backgroundColor = selectedUIColor
+    }
+    
+    // MARK: - Utility functions
+    
+    // show color picker from UIButton
+    fileprivate func showColorPicker(){
+        
+        // initialise color picker view controller
+        let colorPickerVc = storyboard?.instantiateViewController(withIdentifier: "sbColorPicker") as! ColorPickerViewController
+        
+        // set modal presentation style
+        colorPickerVc.modalPresentationStyle = .popover
+        
+        // set max. size
+        colorPickerVc.preferredContentSize = CGSize(width: 265, height: 400)
+        
+        // set color picker deleagate to current view controller
+        // must write delegate method to handle selected color
+        colorPickerVc.colorPickerDelegate = self
+        
+        // show popover
+        if let popoverController = colorPickerVc.popoverPresentationController {
+            
+            // set source view
+            popoverController.sourceView = self.view
+            
+            // show popover form button
+//            popoverController.sourceRect = self.changeColorButton.frame
+            
+            // show popover arrow at feasible direction
+            popoverController.permittedArrowDirections = UIPopoverArrowDirection.any
+            
+            // set popover delegate self
+            popoverController.delegate = self
+        }
+        
+        //show color popover
+        present(colorPickerVc, animated: true, completion: nil)
+    }
     
     func btn_clicked(_ sender: UIBarButtonItem) {
         // Do something
@@ -63,7 +136,7 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     func tappedToolBarBtn(_ sender: UIBarButtonItem) {
         dateFormatter.dateStyle = DateFormatter.Style.medium
         
@@ -83,6 +156,7 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
                 btnAddCat.setImage(UIImage(named: "Plus-50"), for: .normal)
             }
             else{
+                txfCategory.resignFirstResponder()
                 txfCategory.inputView = nil
                 txfCategory.placeholder = "Add new category"
                 btnAddCat.setImage(UIImage(named: "Minus-50"), for: .normal)
@@ -97,6 +171,7 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
                 btnAddSubCat.setImage(UIImage(named: "Plus-50"), for: .normal)
             }
             else{
+                txfSubcategory.resignFirstResponder()
                 txfSubcategory.inputView = nil
                 txfSubcategory.placeholder = "Add new subcategory"
                 btnAddSubCat.setImage(UIImage(named: "Minus-50"), for: .normal)            }
@@ -178,25 +253,27 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         
     }
     @IBAction func AddNewItem(_ sender: UIButton) {
-        let title = self.title
+        let title = self.navigationItem.title;
         let category = txfCategory.text!
         let subCategory = txfSubcategory.text!
         let date = txfDate.text!
         let amount = Int(txfAmount.text!)!
-        let type = title == "expense" ? 0 : 1
+        let type = title == "New expense" ? 0 : 1
         
         dateFormatter.locale = Locale(identifier: "nl")
         dateFormatter.dateFormat = "dd MM yyyy"
         
 //        let dd = dateFormatter.date(from: date)!
         
-        transaction = Transaction(type: type, cat: category, subCat: subCategory, amount: amount, date: Date(), color: UIColor.purple)
-
+        transaction = Transaction(type: type, cat: category, subCat: subCategory, amount: amount, date: Date(), color: self.selectedColor)
         reset()
         performSegue(withIdentifier: "added", sender: self)
         
     }
-   
+    @IBAction func openColorPicker(_ sender: AnyObject){
+        self.showColorPicker()
+    }
+
 }
 extension UITableViewController
 {
