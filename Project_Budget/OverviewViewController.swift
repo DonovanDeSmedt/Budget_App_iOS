@@ -55,6 +55,21 @@ class OverviewViewController: UITableViewController{
             tableView.endUpdates()
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier! {
+        case "add":
+            print("Go to addViewController")
+        case "detail":
+            let destination = segue.destination as! DetailViewController
+            let selectedIndex = tableView.indexPathForSelectedRow!.row
+            destination.transaction = model.expenses[selectedIndex]
+            print("Go to detailViewController")
+        default:
+            break
+        }
+    }
+    
     @IBAction func unwindFromAdd(_ segue: UIStoryboardSegue){
         let source = segue.source as! AddViewController
         if let transaction = source.transaction{
@@ -62,12 +77,18 @@ class OverviewViewController: UITableViewController{
             if(transaction.type == .expense){
                 model.expenses.append(transaction)
                 tableView.insertRows(at: [IndexPath(row: model.expenses.count - 1, section: 0)], with: .automatic)
+                tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
             }
             else{
                 model.revenues.append(transaction)
                 tableView.insertRows(at: [IndexPath(row: model.revenues.count - 1, section: 1)], with: .automatic)
+                tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
             }
+
             tableView.endUpdates()
         }
+    }
+    @IBAction func unwindFrommDetail(_ segue: UIStoryboardSegue){
+        
     }
 }
