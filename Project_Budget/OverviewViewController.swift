@@ -2,7 +2,7 @@ import UIKit
 
 class OverviewViewController: UITableViewController{
     
-    private var model = TransactionRepository()
+    private var model = CategoryRepository()
     
     
     
@@ -31,18 +31,18 @@ class OverviewViewController: UITableViewController{
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "previewTransactionCell", for: indexPath) as! PreviewTransactionCell
-        var transaction:Transaction
+        var category:Category
         if(indexPath.section == 0){
-            transaction = model.expenses[indexPath.row]
+            category = model.expenses[indexPath.row]
         }
         else{
-            transaction = model.revenues[indexPath.row]
+            category = model.revenues[indexPath.row]
         }
         
-        cell.categegoryName.text = "\(transaction.category)"
-        cell.amount.text = "€ \(transaction.amount)"
-        cell.color.backgroundColor = transaction.color
-        let represenation = model.calcRepresentation(transaction: transaction)
+        cell.categegoryName.text = "\(category.name)"
+        cell.amount.text = "€ \(model.getTotalAmount(of: category))"
+        cell.color.backgroundColor = category.color
+        let represenation = model.calcRepresentation(category: category)
         cell.representation.text = "Represens \(represenation)%"
         return cell
     }
@@ -63,7 +63,7 @@ class OverviewViewController: UITableViewController{
         case "detail":
             let destination = segue.destination as! DetailViewController
             let selectedIndex = tableView.indexPathForSelectedRow!.row
-            destination.transaction = model.expenses[selectedIndex]
+            destination.category = model.expenses[selectedIndex]
             print("Go to detailViewController")
         default:
             break
@@ -72,15 +72,15 @@ class OverviewViewController: UITableViewController{
     
     @IBAction func unwindFromAdd(_ segue: UIStoryboardSegue){
         let source = segue.source as! AddViewController
-        if let transaction = source.transaction{
+        if let category = source.category{
             tableView.beginUpdates()
-            if(transaction.type == .expense){
-                model.expenses.append(transaction)
+            if(category.type == .expense){
+                model.expenses.append(category)
                 tableView.insertRows(at: [IndexPath(row: model.expenses.count - 1, section: 0)], with: .automatic)
                 tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
             }
             else{
-                model.revenues.append(transaction)
+                model.revenues.append(category)
                 tableView.insertRows(at: [IndexPath(row: model.revenues.count - 1, section: 1)], with: .automatic)
                 tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
             }

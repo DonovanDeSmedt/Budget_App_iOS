@@ -39,7 +39,9 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
     let subCatPickerview = UIPickerView()
     let datePickerView = UIDatePicker()
     
-    var transaction: Transaction?
+    var category: Category?
+    var subcategory: Subcategory?
+    var categoryRepository: CategoryRepository = CategoryRepository()
     private let dateFormatter = DateFormatter()
 
 
@@ -254,10 +256,10 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
     }
     @IBAction func AddNewItem(_ sender: UIButton) {
         let title = self.navigationItem.title;
-        let category = txfCategory.text!
-        let subCategory = txfSubcategory.text!
+        let catName = txfCategory.text!
+        let subcatName = txfSubcategory.text!
         let date = txfDate.text!
-        let amount = Int(txfAmount.text!)!
+        let amount = Double(txfAmount.text!)!
         let type = title == "New expense" ? 0 : 1
         
         dateFormatter.locale = Locale(identifier: "nl")
@@ -265,7 +267,24 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         
 //        let dd = dateFormatter.date(from: date)!
         
-        transaction = Transaction(type: type, cat: category, subCat: subCategory, amount: amount, date: Date(), color: self.selectedColor)
+        if isAddCat{
+            //new category and new subcategory
+            subcategory = Subcategory(name: subcatName, transaction: Transaction(amount: amount, date: Date()))
+            category = Category(type: type, name: catName, subcat: subcategory!, color: self.selectedColor)
+        }
+        else if isAddSubCat {
+            //get category and new subcategory
+            subcategory = Subcategory(name: subcatName, transaction: Transaction(amount: amount, date: Date()))
+            category = categoryRepository.getCategory(with: catName)
+            category!.subcategories.append(subcategory!)
+        }
+        else{
+            //get category and get subcategory
+            category = categoryRepository.getCategory(with: catName)
+            subcategory = categoryRepository.getSubCategory(with: subcatName, of: category!)
+            subcategory!.transactions.append(Transaction(amount: amount, date: Date()))
+        }
+    
         reset()
         performSegue(withIdentifier: "added", sender: self)
         

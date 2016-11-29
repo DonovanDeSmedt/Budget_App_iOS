@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		9900613F1DE051340065198B /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9900613E1DE051340065198B /* OverviewViewController.swift */; };
 		990061411DE057D50065198B /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990061401DE057D50065198B /* Transaction.swift */; };
-		990061431DE062B90065198B /* TransactionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990061421DE062B90065198B /* TransactionRepository.swift */; };
+		990061431DE062B90065198B /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990061421DE062B90065198B /* CategoryRepository.swift */; };
 		990061451DE063F50065198B /* PreviewTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990061441DE063F50065198B /* PreviewTransactionCell.swift */; };
 		990061471DE08BA80065198B /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990061461DE08BA80065198B /* TabViewController.swift */; };
 		991834511DE1A6FE0035FD5E /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9918344F1DE1A6FE0035FD5E /* ColorPickerViewController.swift */; };
@@ -28,7 +28,7 @@
 /* Begin PBXFileReference section */
 		9900613E1DE051340065198B /* OverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
 		990061401DE057D50065198B /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
-		990061421DE062B90065198B /* TransactionRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionRepository.swift; sourceTree = "<group>"; };
+		990061421DE062B90065198B /* CategoryRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
 		990061441DE063F50065198B /* PreviewTransactionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewTransactionCell.swift; sourceTree = "<group>"; };
 		990061461DE08BA80065198B /* TabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		9918344F1DE1A6FE0035FD5E /* ColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
@@ -61,7 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				990061401DE057D50065198B /* Transaction.swift */,
-				990061421DE062B90065198B /* TransactionRepository.swift */,
+				990061421DE062B90065198B /* CategoryRepository.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -213,7 +213,7 @@
 				9900613F1DE051340065198B /* OverviewViewController.swift in Sources */,
 				990061471DE08BA80065198B /* TabViewController.swift in Sources */,
 				991834511DE1A6FE0035FD5E /* ColorPickerViewController.swift in Sources */,
-				990061431DE062B90065198B /* TransactionRepository.swift in Sources */,
+				990061431DE062B90065198B /* CategoryRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
