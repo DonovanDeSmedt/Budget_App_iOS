@@ -41,7 +41,7 @@ class OverviewViewController: UITableViewController{
         
         cell.categegoryName.text = "\(category.name)"
         cell.amount.text = "€ \(model.getTotalAmount(of: category))"
-        cell.color.backgroundColor = category.color
+        cell.color.backgroundColor = UIColor().rgbToUIColor(category.color)
         let represenation = model.calcRepresentation(category: category)
         cell.representation.text = "Represens \(represenation)%"
         return cell
@@ -59,11 +59,22 @@ class OverviewViewController: UITableViewController{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier! {
         case "add":
+            let navigationController = segue.destination as! UINavigationController
+            let destination = navigationController.topViewController as! AddViewController
+            destination.categoryRepository = model
             print("Go to addViewController")
         case "detail":
-            let destination = segue.destination as! DetailViewController
+            let navigationController = segue.destination as! UINavigationController
+            let destination = navigationController.topViewController as! DetailViewController
             let selectedIndex = tableView.indexPathForSelectedRow!.row
-            destination.category = model.expenses[selectedIndex]
+            if tableView.indexPathForSelectedRow?.section == 0 {
+                destination.category = model.expenses[selectedIndex]
+            }
+            else {
+                destination.category = model.revenues[selectedIndex]
+            }
+            
+            
             print("Go to detailViewController")
         default:
             break
@@ -75,12 +86,12 @@ class OverviewViewController: UITableViewController{
         if let category = source.category{
             tableView.beginUpdates()
             if(category.type == .expense){
-                model.expenses.append(category)
+                model.addCategory(category, of: .expense)
                 tableView.insertRows(at: [IndexPath(row: model.expenses.count - 1, section: 0)], with: .automatic)
                 tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
             }
             else{
-                model.revenues.append(category)
+                model.addCategory(category, of: .revenue)
                 tableView.insertRows(at: [IndexPath(row: model.revenues.count - 1, section: 1)], with: .automatic)
                 tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
             }

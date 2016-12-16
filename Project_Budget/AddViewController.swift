@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Foundation
+import Realm
+import RealmSwift
 
 class AddViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate,UIPopoverPresentationControllerDelegate, ColorPickerDelegate{
 
@@ -41,7 +44,7 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
     
     var category: Category?
     var subcategory: Subcategory?
-    var categoryRepository: CategoryRepository = CategoryRepository()
+    var categoryRepository: CategoryRepository?
     private let dateFormatter = DateFormatter()
 
 
@@ -260,31 +263,54 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         let subcatName = txfSubcategory.text!
         let date = txfDate.text!
         let amount = Double(txfAmount.text!)!
-        let type = title == "New expense" ? 0 : 1
+        let type = title == "New expense" ? TransactionType.expense : TransactionType.revenue
         
         dateFormatter.locale = Locale(identifier: "nl")
         dateFormatter.dateFormat = "dd MM yyyy"
         
 //        let dd = dateFormatter.date(from: date)!
+        let trans = Transaction()
+        trans.amount = amount
+        trans.date = Date()
         
-        if isAddCat{
-            //new category and new subcategory
-            subcategory = Subcategory(name: subcatName, transaction: Transaction(amount: amount, date: Date()))
-            category = Category(type: type, name: catName, subcat: subcategory!, color: self.selectedColor)
-        }
-        else if isAddSubCat {
-            //get category and new subcategory
-            subcategory = Subcategory(name: subcatName, transaction: Transaction(amount: amount, date: Date()))
-            category = categoryRepository.getCategory(with: catName)
-            category!.subcategories.append(subcategory!)
+        
+        
+        do {
+            let realm = try Realm()
+            try! realm.write {
+                
+            
+        //check if category already exist
+        if (categoryRepository?.categoryExist(with: catName.lowercased(), of: type))! {
+            category = categoryRepository?.getCategory(with: catName.lowercased(), of: type)
+            
+            //check if subcategory already exist
+            if (categoryRepository?.subCategoryExist(of: category!, with: subcatName))! {
+                subcategory = categoryRepository?.getSubCategory(with: subcatName, of: category!, with: type)
+                subcategory!.transactions.append(trans)
+            }
+            else{
+                subcategory = Subcategory()
+                subcategory!.name = subcatName
+                subcategory!.transactions.append(trans)
+                
+                category!.subcategories.append(subcategory!)
+            }
         }
         else{
-            //get category and get subcategory
-            category = categoryRepository.getCategory(with: catName)
-            subcategory = categoryRepository.getSubCategory(with: subcatName, of: category!)
-            subcategory!.transactions.append(Transaction(amount: amount, date: Date()))
+            subcategory = Subcategory()
+            subcategory?.name = subcatName
+            subcategory?.transactions.append(trans)
+            category = Category()
+            category!.type = type
+            category!.name = catName
+            category!.subcategories.append(subcategory!)
+            category!.color = self.selectedColor.rgb()!
         }
-    
+            }
+        } catch let error as NSError{
+            fatalError(error.localizedDescription)
+        }
         reset()
         performSegue(withIdentifier: "added", sender: self)
         
