@@ -81,7 +81,7 @@ class OverviewViewController: UITableViewController{
         }
     }
     
-    @IBAction func unwindFromAdd(_ segue: UIStoryboardSegue){
+    @IBAction func unwindFromAdd1(_ segue: UIStoryboardSegue){
         let source = segue.source as! AddViewController
         if let category = source.category{
             tableView.beginUpdates()
@@ -99,7 +99,7 @@ class OverviewViewController: UITableViewController{
             tableView.endUpdates()
         }
     }
-    @IBAction func unwindFrommDetail(_ segue: UIStoryboardSegue){
+    @IBAction func unwindFrommDetail1(_ segue: UIStoryboardSegue){
         
     }
 }

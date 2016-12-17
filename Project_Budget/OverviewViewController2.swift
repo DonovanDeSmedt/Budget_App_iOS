@@ -47,35 +47,60 @@ class OverviewViewController2: UICollectionViewController{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier! {
         case "add":
+            let navigationController = segue.destination as! UINavigationController
+            let destination = navigationController.topViewController as! AddViewController
+            destination.categoryRepository = model
             print("Go to addViewController")
         case "detail":
-            let destination = segue.destination as! DetailViewController
-            let selectedIndexPath = collectionView!.indexPathsForSelectedItems!.first!
-            destination.category = model.expenses[selectedIndexPath.row]
+            let navigationController = segue.destination as! UINavigationController
+            let destination = navigationController.topViewController as! DetailViewController
+            let selectedIndex = collectionView!.indexPathsForSelectedItems!.first!
+            if selectedIndex.section == 0 {
+                destination.category = model.expenses[selectedIndex.row]
+            }
+            else {
+                destination.category = model.revenues[selectedIndex.row]
+            }
             print("Go to detailViewController")
         default:
             break
         }
     }
     
-    @IBAction func unwindFromAdd(_ segue: UIStoryboardSegue){
-        let source = segue.source as! AddViewController
-        if let category = source.category{
-            if(category.type == .expense){
-                model.expenses.append(category)
-                //collectionView?.insertItems(at: [IndexPath(row: model.expenses.count - 1, section: 0)], with: .automatic)
-            }
-            else{
-                model.revenues.append(category)
-                //collectionView?.insertItems(at: [IndexPath(row: model.revenues.count - 1, section: 1)], with: .automatic)
-
-            }
-            collectionView?.reloadData();
-            
-        }
-    }
-    @IBAction func unwindFrommDetail(_ segue: UIStoryboardSegue){
-        
-    }
+//    @IBAction func unwindFromAdd(_ segue: UIStoryboardSegue){
+////        let source = segue.source as! AddViewController
+////        if let category = source.category{
+////            if(category.type == .expense){
+////                model.expenses.append(category)
+////                //collectionView?.insertItems(at: [IndexPath(row: model.expenses.count - 1, section: 0)], with: .automatic)
+////            }
+////            else{
+////                model.revenues.append(category)
+////                //collectionView?.insertItems(at: [IndexPath(row: model.revenues.count - 1, section: 1)], with: .automatic)
+////
+////            }
+////            collectionView?.reloadData();
+////            
+////        }
+//        
+//        let source = segue.source as! AddViewController
+//        if let category = source.category{
+//            if(category.type == .expense){
+//                model.addCategory(category, of: .expense)
+////                tableView.insertRows(at: [IndexPath(row: model.expenses.count - 1, section: 0)], with: .automatic)
+////                tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+//            }
+//            else{
+//                model.addCategory(category, of: .revenue)
+////                tableView.insertRows(at: [IndexPath(row: model.revenues.count - 1, section: 1)], with: .automatic)
+////                tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+//            }
+//            
+//            collectionView?.reloadData();
+//        }
+//    }
+//    @IBAction func unwindFrommDetail(_ segue: UIStoryboardSegue){
+//        
+//    }
 }
 

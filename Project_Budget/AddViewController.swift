@@ -34,8 +34,8 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
     var selectedColor: UIColor = UIColor.blue
     var selectedColorHex: String = "0000FF"
     
-    var pickOptionCat = ["cat1", "cat2", "cat3", "cat4", "cat5"]
-    var pickOptionSubCat = ["subcat1", "subcat2", "subcat3", "subcat4", "subcat5"]
+    var pickOptionCat :[String] = []
+    var pickOptionSubCat :[String] = [] // = ["subcat1", "subcat2", "subcat3", "subcat4", "subcat5"]
     var isAddCat = false
     var isAddSubCat = false
     let catPickerview = UIPickerView()
@@ -45,8 +45,8 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
     var category: Category?
     var subcategory: Subcategory?
     var categoryRepository: CategoryRepository?
+    var currentType = TransactionType.expense
     private let dateFormatter = DateFormatter()
-
 
     
  
@@ -69,12 +69,19 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         datePickerView.datePickerMode = UIDatePickerMode.date
         datePickerView.addTarget(self, action: #selector(AddViewController.datePickerValueChanged), for: UIControlEvents.valueChanged)
         
+        
+        updateListCategories()
+        
         catPickerview.delegate = self
         subCatPickerview.delegate = self
         
         txfCategory.inputView = catPickerview
         txfSubcategory.inputView = subCatPickerview
         txfDate.inputView = datePickerView
+    }
+    
+    func updateListCategories(){
+        pickOptionCat = (categoryRepository?.categories.filter {$0.type == currentType}.map {$0.name})!
     }
     // Override iPhone behavior that presents a popover as fullscreen.
     // i.e. now it shows same popover box within on iPhone & iPad
@@ -159,12 +166,19 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
                 txfCategory.inputView = catPickerview
                 txfCategory.placeholder = "Select a category"
                 btnAddCat.setImage(UIImage(named: "Plus-50"), for: .normal)
+                txfSubcategory.inputView = subCatPickerview
+                txfSubcategory.placeholder = "Select a subcategory"
+                btnAddSubCat.setImage(UIImage(named: "Plus-50"), for: .normal)
             }
             else{
                 txfCategory.resignFirstResponder()
                 txfCategory.inputView = nil
                 txfCategory.placeholder = "Add new category"
                 btnAddCat.setImage(UIImage(named: "Minus-50"), for: .normal)
+                txfSubcategory.resignFirstResponder()
+                txfSubcategory.inputView = nil
+                txfSubcategory.placeholder = "Add new subcategory"
+                btnAddSubCat.setImage(UIImage(named: "Minus-50"), for: .normal)
             }
             isAddCat = !isAddCat
 
@@ -179,7 +193,8 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
                 txfSubcategory.resignFirstResponder()
                 txfSubcategory.inputView = nil
                 txfSubcategory.placeholder = "Add new subcategory"
-                btnAddSubCat.setImage(UIImage(named: "Minus-50"), for: .normal)            }
+                btnAddSubCat.setImage(UIImage(named: "Minus-50"), for: .normal)
+            }
             isAddSubCat = !isAddSubCat
 
         }
@@ -221,6 +236,8 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == catPickerview{
             txfCategory.text = pickOptionCat[row]
+            let selectedCategory = categoryRepository?.getCategory(with: txfCategory.text!.lowercased(), of: currentType)
+            pickOptionSubCat = (selectedCategory?.subcategories.map {$0.name})!
         }
         
         if pickerView ==  subCatPickerview{
@@ -241,12 +258,15 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         switch segmentControl.selectedSegmentIndex
         {
         case 0:
-            self.title = "New expense";
+            self.title = "New expense"
+            currentType = .expense
         case 1:
-            self.title = "New revenue";
+            self.title = "New revenue"
+            currentType = .revenue
         default:
             break; 
         }
+        updateListCategories()
         }
     @IBAction func reset(){
         txfAmount.text = ""
@@ -258,13 +278,11 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         
     }
     @IBAction func AddNewItem(_ sender: UIButton) {
-        let title = self.navigationItem.title;
         let catName = txfCategory.text!
         let subcatName = txfSubcategory.text!
         let date = txfDate.text!
         let amount = Double(txfAmount.text!)!
-        let type = title == "New expense" ? TransactionType.expense : TransactionType.revenue
-        
+
         dateFormatter.locale = Locale(identifier: "nl")
         dateFormatter.dateFormat = "dd MM yyyy"
         
@@ -281,12 +299,12 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
                 
             
         //check if category already exist
-        if (categoryRepository?.categoryExist(with: catName.lowercased(), of: type))! {
-            category = categoryRepository?.getCategory(with: catName.lowercased(), of: type)
+        if (categoryRepository?.categoryExist(with: catName.lowercased(), of: currentType))! {
+            category = categoryRepository?.getCategory(with: catName.lowercased(), of: currentType)
             
             //check if subcategory already exist
-            if (categoryRepository?.subCategoryExist(of: category!, with: subcatName))! {
-                subcategory = categoryRepository?.getSubCategory(with: subcatName, of: category!, with: type)
+            if (categoryRepository?.subCategoryExist(of: category!, with: subcatName.lowercased()))! {
+                subcategory = categoryRepository?.getSubCategory(with: subcatName.lowercased(), of: category!, with: currentType)
                 subcategory!.transactions.append(trans)
             }
             else{
@@ -302,10 +320,11 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
             subcategory?.name = subcatName
             subcategory?.transactions.append(trans)
             category = Category()
-            category!.type = type
+            category!.type = currentType
             category!.name = catName
             category!.subcategories.append(subcategory!)
             category!.color = self.selectedColor.rgb()!
+            categoryRepository!.updateObjectDb(category: category!, update: false)
         }
             }
         } catch let error as NSError{

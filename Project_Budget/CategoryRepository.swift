@@ -110,16 +110,15 @@ class CategoryRepository{
     func updateObjectDb(category: Category, update: Bool) {
         do {
             let realm = try Realm()
-            try! realm.write {
                 realm.add(category, update: update)
-            }
+        
         } catch let error as NSError{
             fatalError(error.localizedDescription)
         }
         
     }
     
-    func calcRepresentation(category: Category) -> Int{
+    func calcRepresentation(category: Category) -> (percent: Double, value: Int){
         var total:Double
         if(category.type == .expense){
             total = expenses.reduce(0) { $0 + $1.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} } }
@@ -128,7 +127,7 @@ class CategoryRepository{
             total = revenues.reduce(0) { $0 + $1.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} } }
         }
         let percent = Double(category.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount}}) / Double(total)
-        return Int(percent*100)
+        return (percent: percent, value: Int(percent*100))
     }
     
     func getTotalAmount(of category: Category) -> Double{
@@ -138,27 +137,27 @@ class CategoryRepository{
     func getCategory(with name: String, of type: TransactionType) -> Category{
         switch type {
         case .expense:
-            return expenses.filter {$0.name == name}.first!
+            return expenses.filter {$0.name.lowercased() == name}.first!
         case .revenue:
-            return revenues.filter {$0.name == name}.first!
+            return revenues.filter {$0.name.lowercased() == name}.first!
         }
     }
     
     func getSubCategory(with name: String, of category: Category, with type: TransactionType) -> Subcategory{
-        return getCategory(with: category.name,of: type).subcategories.filter {$0.name == name}.first!
+        return getCategory(with: category.name.lowercased(),of: type).subcategories.filter {$0.name.lowercased() == name}.first!
     }
     
     func categoryExist(with name: String, of type: TransactionType) -> Bool{
         switch type {
         case .expense:
-           return expenses.filter({$0.name == name}).first != nil
+           return expenses.filter({$0.name.lowercased() == name}).first != nil
         case .revenue:
-            return revenues.filter({$0.name == name}).first != nil
+            return revenues.filter({$0.name.lowercased() == name}).first != nil
         }
     }
     
     func subCategoryExist(of category: Category, with name: String) -> Bool {
-        return category.subcategories.filter({$0.name == name}).first != nil
+        return category.subcategories.filter({$0.name.lowercased() == name}).first != nil
     }
     
     
@@ -185,7 +184,7 @@ class CategoryRepository{
             
         }
         print(category.subcategories.count)
-        //updateObjectDb(category: category, update: isUpdate)
+        
         
     }
 
