@@ -3,6 +3,7 @@ import UIKit
 class DetailViewController: UITableViewController{
     
     var category: Category!
+    var model :CategoryRepository?
     let dateFormatter = DateFormatter()
     
     
@@ -18,6 +19,9 @@ class DetailViewController: UITableViewController{
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if category.subcategories[section].transactions.count == 0 {
+            return 0
+        }
         return category.subcategories[section].transactions.count + 1
     }
 
@@ -45,6 +49,24 @@ class DetailViewController: UITableViewController{
             cell.itemName.text = "\(dateFormatter.string(from: category.subcategories[indexPath.section].transactions[indexPath.row].date))"
             cell.itemPrice.text = "€\(category.subcategories[indexPath.section].transactions[indexPath.row].amount)"
             return cell
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            tableView.beginUpdates()
+            if indexPath.row >= category.subcategories[indexPath.section].transactions.count {
+                print("Delete hole subcat")
+                model!.removeSubcategoryFromDb(category.subcategories[indexPath.section])
+            }
+            else {
+                print("Delete one transaction")
+                model!.removeTransactionFromDb(category.subcategories[indexPath.section].transactions[indexPath.row])
+            }
+            
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.endUpdates()
+            
         }
     }
     

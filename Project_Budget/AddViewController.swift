@@ -26,6 +26,7 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
 
     @IBOutlet weak var colorPreview: UIView!
     
+    @IBOutlet weak var colorText: UILabel!
     @IBOutlet weak var txfAmount: UITextField!
     
     
@@ -56,17 +57,20 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         self.hideKeyboard()
         
         // set corner radious
-        self.colorPreview.layer.cornerRadius = self.colorPreview.layer.frame.width/6
+        colorPreview.layer.cornerRadius = self.colorPreview.layer.frame.width/6
         // set default background color
-        self.colorPreview.backgroundColor = self.selectedColor
+        colorPreview.backgroundColor = self.selectedColor
         let gesture = UITapGestureRecognizer(target: self, action:  #selector (openColorPicker(_:)))
-        self.colorPreview.addGestureRecognizer(gesture)
-        
+        colorPreview.addGestureRecognizer(gesture)
+        setColorPickerVisibility(isHidden: true)
+
         
         btnAddCat.addTarget(self, action:#selector(addCatTapped(_:)), for: .touchUpInside)
         btnAddSubCat.addTarget(self, action:#selector(addCatTapped(_:)), for: .touchUpInside)
     
         datePickerView.datePickerMode = UIDatePickerMode.date
+        datePickerView.locale = Locale(identifier: "nl")
+        datePickerView.timeZone = NSTimeZone.local
         datePickerView.addTarget(self, action: #selector(AddViewController.datePickerValueChanged), for: UIControlEvents.valueChanged)
         
         
@@ -78,10 +82,11 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         txfCategory.inputView = catPickerview
         txfSubcategory.inputView = subCatPickerview
         txfDate.inputView = datePickerView
+        
     }
     
     func updateListCategories(){
-        pickOptionCat = (categoryRepository?.categories.filter {$0.type == currentType}.map {$0.name})!
+        pickOptionCat = (currentType == .expense ? categoryRepository?.expenses.map {$0.name} : categoryRepository?.revenues.map {$0.name})!
     }
     // Override iPhone behavior that presents a popover as fullscreen.
     // i.e. now it shows same popover box within on iPhone & iPad
@@ -169,6 +174,7 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
                 txfSubcategory.inputView = subCatPickerview
                 txfSubcategory.placeholder = "Select a subcategory"
                 btnAddSubCat.setImage(UIImage(named: "Plus-50"), for: .normal)
+                setColorPickerVisibility(isHidden: true)
             }
             else{
                 txfCategory.resignFirstResponder()
@@ -179,6 +185,9 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
                 txfSubcategory.inputView = nil
                 txfSubcategory.placeholder = "Add new subcategory"
                 btnAddSubCat.setImage(UIImage(named: "Minus-50"), for: .normal)
+                setColorPickerVisibility(isHidden: false)
+                
+                colorPreview.isHidden = false
             }
             isAddCat = !isAddCat
 
@@ -245,14 +254,20 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         }
         
     }
+    private func setColorPickerVisibility (isHidden: Bool){
+        colorPreview.isHidden = isHidden
+        colorText.isHidden = isHidden
+    }
 
     func datePickerValueChanged(_ sender: UIDatePicker){
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = DateFormatter.Style.none
+        dateFormatter.dateFormat = "dd-MM-yyyy"
         txfDate.text = dateFormatter.string(from: sender.date)
     }
     
+
     @IBAction func OnChangeType(_ sender: UISegmentedControl) {
         
         switch segmentControl.selectedSegmentIndex
@@ -278,18 +293,41 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         
     }
     @IBAction func AddNewItem(_ sender: UIButton) {
-        let catName = txfCategory.text!
-        let subcatName = txfSubcategory.text!
-        let date = txfDate.text!
-        let amount = Double(txfAmount.text!)!
-
-        dateFormatter.locale = Locale(identifier: "nl")
-        dateFormatter.dateFormat = "dd MM yyyy"
         
-//        let dd = dateFormatter.date(from: date)!
+        //Inputvalidation
+        guard let catName = txfCategory.text, !catName.isEmpty else{
+            updateValidation(for: txfCategory, valid: false)
+            return
+        }
+        updateValidation(for: txfCategory, valid: true)
+        
+        guard let subcatName = txfSubcategory.text, !subcatName.isEmpty else {
+            updateValidation(for: txfSubcategory, valid: false)
+            return
+        }
+        updateValidation(for: txfSubcategory, valid: true)
+        
+        guard let date = txfDate.text, !date.isEmpty else {
+            updateValidation(for: txfDate, valid: false)
+            return
+        }
+        updateValidation(for: txfDate, valid: true)
+        
+        guard let amount = txfAmount.text, !amount.isEmpty else {
+            updateValidation(for: txfAmount, valid: false)
+            return
+        }
+        updateValidation(for: txfAmount, valid: true)
+        
+       
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        let dd = dateFormatter.date(from: date)
+        
+        
+        //Creation Transaction object
         let trans = Transaction()
-        trans.amount = amount
-        trans.date = Date()
+        trans.amount = Double(amount)!
+        trans.date = Calendar.current.date(byAdding: .day, value: 1, to: dd!)!
         
         
         
@@ -332,10 +370,25 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         }
         reset()
         performSegue(withIdentifier: "added", sender: self)
+    
         
     }
     @IBAction func openColorPicker(_ sender: AnyObject){
         self.showColorPicker()
+    }
+    private func updateValidation(for inputField: UITextField, valid: Bool){
+        if valid {
+            inputField.layer.borderColor = UIColor(red: 204.0/255.0, green: 204.0/255.0, blue: 204.0/255.0, alpha: 1.0).cgColor
+            inputField.layer.borderWidth = 0.5
+            inputField.layer.cornerRadius = 5.0
+        }
+        else {
+            inputField.layer.borderColor = UIColor.red.cgColor
+            inputField.layer.borderWidth = 0.5
+            inputField.layer.masksToBounds = true
+            inputField.layer.cornerRadius = 5
+        }
+        
     }
 
 }

@@ -115,16 +115,46 @@ class CategoryRepository{
         } catch let error as NSError{
             fatalError(error.localizedDescription)
         }
-        
+    }
+    func removeCategoryFromDb(_ category: Category){
+        var categoryCopy = category
+        for var subcategory in category.subcategories{
+            for var transaction in subcategory.transactions {
+                removeObjectFromDb(&transaction)
+            }
+            removeObjectFromDb(&subcategory)
+        }
+        removeObjectFromDb(&categoryCopy)
+    }
+    func removeSubcategoryFromDb(_ subcategory: Subcategory){
+        var subCategoryCopy = subcategory
+        for var transaction in subcategory.transactions {
+            removeObjectFromDb(&transaction)
+        }
+        removeObjectFromDb(&subCategoryCopy)
+    }
+    func removeTransactionFromDb(_ transaction: Transaction){
+        var transactionCopy = transaction
+        removeObjectFromDb(&transactionCopy)
+    }
+    private func removeObjectFromDb<E>(_ object: inout E){
+        do {
+            let realm = try Realm()
+            try! realm.write {
+                realm.delete(object as! Object)
+            }
+        } catch let error as NSError {
+            fatalError(error.localizedDescription)
+        }
     }
     
     func calcRepresentation(category: Category) -> (percent: Double, value: Int){
         var total:Double
         if(category.type == .expense){
-            total = expenses.reduce(0) { $0 + $1.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} } }
+            total = getTotalExpenses()
         }
         else{
-            total = revenues.reduce(0) { $0 + $1.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} } }
+            total = getTotalRevenues()
         }
         let percent = Double(category.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount}}) / Double(total)
         return (percent: percent, value: Int(percent*100))
@@ -133,6 +163,13 @@ class CategoryRepository{
     func getTotalAmount(of category: Category) -> Double{
         return category.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} }
     }
+    func getTotalExpenses() -> Double{
+        return expenses.reduce(0) { $0 + $1.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} } }
+    }
+    func getTotalRevenues() -> Double {
+        return revenues.reduce(0) { $0 + $1.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} } }
+    }
+    
     
     func getCategory(with name: String, of type: TransactionType) -> Category{
         switch type {

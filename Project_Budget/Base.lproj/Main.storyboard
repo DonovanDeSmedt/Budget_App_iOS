@@ -25,7 +25,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="acP-HJ-fLf" id="G6a-KD-abK">
-                                    <rect key="frame" x="0.0" y="0.0" width="342" height="99"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="99.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TGz-Li-tqO">
@@ -614,6 +614,7 @@
                         <outlet property="btnAddCat" destination="uON-ff-Mh9" id="S9h-d9-5Qe"/>
                         <outlet property="btnAddSubCat" destination="yrV-LQ-cmj" id="d8U-7y-Hgg"/>
                         <outlet property="colorPreview" destination="6Zf-fY-nMc" id="IL3-pa-L0j"/>
+                        <outlet property="colorText" destination="5x0-kG-5zm" id="t3G-E5-OJq"/>
                         <outlet property="segmentControl" destination="C9C-eU-u37" id="KeF-T7-2vh"/>
                         <outlet property="txfAmount" destination="hty-Bn-OaP" id="PKn-Gz-dp8"/>
                         <outlet property="txfCategory" destination="Ich-Bn-Ck8" id="51Q-ZC-aM8"/>
@@ -836,10 +837,15 @@
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="btnNextMonth" destination="OMW-Zq-cNq" id="7sN-gv-QNx"/>
+                        <outlet property="btnPreviousMonth" destination="CPH-pa-5D1" id="j85-4L-2az"/>
                         <outlet property="footer" destination="mky-Dd-vB7" id="kVc-hL-ZF8"/>
                         <outlet property="header" destination="cEF-xo-0Nl" id="t61-Yi-wHS"/>
+                        <outlet property="monthText" destination="skc-WZ-p5A" id="97O-P8-VbM"/>
                         <outlet property="overview" destination="k6Q-l9-cyb" id="zem-ZX-bk0"/>
                         <outlet property="segmentControl" destination="M5T-4d-7dg" id="EzK-MD-tfd"/>
+                        <outlet property="totalExpensesText" destination="fmy-D5-weA" id="z8L-bz-7qa"/>
+                        <outlet property="totalRevenuesText" destination="6QN-8Q-7BM" id="LaT-gT-A8l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="819-PU-6na" userLabel="First Responder" sceneMemberID="firstResponder"/>
