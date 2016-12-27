@@ -13,17 +13,13 @@ class CategoryRepository{
     var revenues: [Category]
     
     init(){
-        
-        
-        
         self.expenses = categories.filter {$0.type == .expense}
         self.revenues = categories.filter {$0.type == .revenue}
-        //seedDb()
-        //deleteDb()
+        // seedDb()
+        // deleteDb()
         print(Realm.Configuration.defaultConfiguration.fileURL!)
         
         readDb()
-        
     }
     
     /*

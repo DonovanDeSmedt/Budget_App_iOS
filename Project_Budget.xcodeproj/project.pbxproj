@@ -19,6 +19,8 @@
 		992A660A1DEDA7CB00787FE2 /* CustomHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992A66091DEDA7CB00787FE2 /* CustomHeaderCell.swift */; };
 		992A660C1DEDBB9F00787FE2 /* CustomFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992A660B1DEDBB9F00787FE2 /* CustomFooterCell.swift */; };
 		9960D11A1DF6C2FC00044169 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9960D1191DF6C2FC00044169 /* CategoryCell.swift */; };
+		996384231E12E3EB0072B6B5 /* BarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996384221E12E3EB0072B6B5 /* BarChartViewController.swift */; };
+		996384251E12E92B0072B6B5 /* PieChartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996384241E12E92B0072B6B5 /* PieChartController.swift */; };
 		99ACE7951E0D84F400F6FBA5 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ACE7941E0D84F400F6FBA5 /* Extensions.swift */; };
 		99C7A1A71E01402600F94398 /* SubCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C7A1A61E01402600F94398 /* SubCategory.swift */; };
 		99C7A1A91E01403300F94398 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C7A1A81E01403300F94398 /* Category.swift */; };
@@ -35,7 +37,7 @@
 		5F075A2500A879EFC3ED41A9 /* Pods_Project_Budget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Project_Budget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B0CB4687D1B8FFA8CBFF9FE /* Pods-Project_Budget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Project_Budget.release.xcconfig"; path = "Pods/Target Support Files/Pods-Project_Budget/Pods-Project_Budget.release.xcconfig"; sourceTree = "<group>"; };
 		990061401DE057D50065198B /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
-		990061421DE062B90065198B /* CategoryRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
+		990061421DE062B90065198B /* CategoryRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CategoryRepository.swift; path = ../Model/CategoryRepository.swift; sourceTree = "<group>"; };
 		990061441DE063F50065198B /* PreviewTransactionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewTransactionCell.swift; sourceTree = "<group>"; };
 		990061461DE08BA80065198B /* TabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		9918344F1DE1A6FE0035FD5E /* ColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
@@ -45,6 +47,8 @@
 		992A66091DEDA7CB00787FE2 /* CustomHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderCell.swift; sourceTree = "<group>"; };
 		992A660B1DEDBB9F00787FE2 /* CustomFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomFooterCell.swift; sourceTree = "<group>"; };
 		9960D1191DF6C2FC00044169 /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		996384221E12E3EB0072B6B5 /* BarChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartViewController.swift; sourceTree = "<group>"; };
+		996384241E12E92B0072B6B5 /* PieChartController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartController.swift; sourceTree = "<group>"; };
 		99ACE7941E0D84F400F6FBA5 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		99C7A1A61E01402600F94398 /* SubCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCategory.swift; sourceTree = "<group>"; };
 		99C7A1A81E01403300F94398 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -82,7 +86,6 @@
 			isa = PBXGroup;
 			children = (
 				990061401DE057D50065198B /* Transaction.swift */,
-				990061421DE062B90065198B /* CategoryRepository.swift */,
 				99C7A1A61E01402600F94398 /* SubCategory.swift */,
 				99C7A1A81E01403300F94398 /* Category.swift */,
 				99ACE7941E0D84F400F6FBA5 /* Extensions.swift */,
@@ -110,8 +113,18 @@
 				990061461DE08BA80065198B /* TabViewController.swift */,
 				992A66031DED88FC00787FE2 /* DetailViewController.swift */,
 				99F336021DF8048500135A2F /* OverviewViewController3.swift */,
+				996384221E12E3EB0072B6B5 /* BarChartViewController.swift */,
+				996384241E12E92B0072B6B5 /* PieChartController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		99A968581E0FFFA7002B8998 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				990061421DE062B90065198B /* CategoryRepository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 		99D98B241DD61CFB002579F1 = {
@@ -135,6 +148,7 @@
 		99D98B2F1DD61CFB002579F1 /* Project_Budget */ = {
 			isa = PBXGroup;
 			children = (
+				99A968581E0FFFA7002B8998 /* Repository */,
 				99DB0AA41DE1B14B00A79C6C /* Supporting Files */,
 				9900613D1DE050F50065198B /* ViewControllers */,
 				9900613C1DE050EB0065198B /* Views */,
@@ -289,6 +303,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				996384231E12E3EB0072B6B5 /* BarChartViewController.swift in Sources */,
+				996384251E12E92B0072B6B5 /* PieChartController.swift in Sources */,
 				99ACE7951E0D84F400F6FBA5 /* Extensions.swift in Sources */,
 				9960D11A1DF6C2FC00044169 /* CategoryCell.swift in Sources */,
 				992A66041DED88FC00787FE2 /* DetailViewController.swift in Sources */,

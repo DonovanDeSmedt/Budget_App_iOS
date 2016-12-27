@@ -7,6 +7,8 @@ target 'Project_Budget' do
 
   # Pods for Project_Budget
 
+    
+    pod 'Charts', :git => 'https://github.com/danielgindi/Charts.git', :branch => 'master'
     pod 'RealmSwift'
 end
 
