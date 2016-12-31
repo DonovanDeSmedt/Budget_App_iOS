@@ -11,12 +11,13 @@ import Foundation
 import Realm
 import RealmSwift
 
-class AddViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate,UIPopoverPresentationControllerDelegate, ColorPickerDelegate{
+class AddViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate,UIPopoverPresentationControllerDelegate, ColorPickerDelegate{
 
     //    ========================================
     //    UIVariables
     //    ========================================
-    @IBOutlet weak var lblTitle: UILabel!
+    
+    @IBOutlet weak var lblTitle1: UILabel!
     @IBOutlet weak var txfCategory: UITextField!
     @IBOutlet weak var txfSubcategory: UITextField!
     @IBOutlet weak var txfDate: UITextField!
@@ -65,8 +66,8 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         setColorPickerVisibility(isHidden: true)
 
         
-        btnAddCat.addTarget(self, action:#selector(addCatTapped(_:)), for: .touchUpInside)
-        btnAddSubCat.addTarget(self, action:#selector(addCatTapped(_:)), for: .touchUpInside)
+        btnAddCat.addTarget(self, action:#selector(addBtnClicked(_:)), for: .touchUpInside)
+        btnAddSubCat.addTarget(self, action:#selector(addBtnClicked(_:)), for: .touchUpInside)
     
         datePickerView.datePickerMode = UIDatePickerMode.date
         datePickerView.locale = Locale(identifier: "nl")
@@ -165,7 +166,7 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         txfDate.resignFirstResponder()
     }
 
-    func addCatTapped(_ sender: UIButton){
+    @IBAction func addBtnClicked(_ sender: UIButton){
         if sender == btnAddCat  {
             if(isAddCat){
                 txfCategory.inputView = catPickerview
@@ -268,7 +269,7 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
     }
     
 
-    @IBAction func OnChangeType(_ sender: UISegmentedControl) {
+    @IBAction func onChangeType(_ sender: UISegmentedControl) {
         
         switch segmentControl.selectedSegmentIndex
         {
@@ -288,12 +289,11 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
         txfDate.text = ""
         txfCategory.text = ""
         txfSubcategory.text = ""
-        addCatTapped(btnAddCat)
-        addCatTapped(btnAddSubCat)
+        addBtnClicked(btnAddCat)
+        addBtnClicked(btnAddSubCat)
         
     }
-    @IBAction func AddNewItem(_ sender: UIButton) {
-        
+    @IBAction func addNewItem(_ sender: UIButton) {
         //Inputvalidation
         guard let catName = txfCategory.text, !catName.isEmpty else{
             updateValidation(for: txfCategory, valid: false)
@@ -401,7 +401,7 @@ class AddViewController: UITableViewController, UIPickerViewDataSource, UIPicker
     }
 
 }
-extension UITableViewController
+extension UIViewController
 {
     func hideKeyboard()
     {
