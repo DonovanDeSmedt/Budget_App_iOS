@@ -2,25 +2,24 @@ import UIKit
 import Charts
 import RealmSwift
 
-class BarCharViewController: UIViewController, UITabBarControllerDelegate, UITabBarDelegate{
+class BarCharViewController: UIViewController{
     
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var barView: BarChartView!
-    private var model :CategoryRepository = CategoryRepository()
+    private var model :CategoryRepository = CategoryRepository.repositoryInstance
     private var currentType : TransactionType = TransactionType.expense
 
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateCharWithData(model.expenses)
+        let data = currentType == .expense ? model.expenses : model.revenues
+        updateCharWithData(data)
     }
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        let tabBarIndex = tabBarController.selectedIndex
-        if tabBarIndex == 1 {
-            model.readDb()
-            updateCharWithData(model.expenses)
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        model.readDb()
+        let data = currentType == .expense ? model.expenses : model.revenues
+        updateCharWithData(data)
     }
     @IBAction func onChangeType(_ sender: UISegmentedControl) {
         switch segmentControl.selectedSegmentIndex

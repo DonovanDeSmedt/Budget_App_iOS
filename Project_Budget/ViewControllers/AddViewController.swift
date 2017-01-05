@@ -244,13 +244,13 @@ class AddViewController: UIViewController, UIPickerViewDataSource, UIPickerViewD
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if pickerView == catPickerview{
+        if pickerView == catPickerview && pickOptionCat.count > 0{
             txfCategory.text = pickOptionCat[row]
             let selectedCategory = categoryRepository?.getCategory(with: txfCategory.text!.lowercased(), of: currentType)
             pickOptionSubCat = (selectedCategory?.subcategories.map {$0.name})!
         }
         
-        if pickerView ==  subCatPickerview{
+        if pickerView == subCatPickerview && pickOptionSubCat.count > 0 {
             txfSubcategory.text = pickOptionSubCat[row]
         }
         

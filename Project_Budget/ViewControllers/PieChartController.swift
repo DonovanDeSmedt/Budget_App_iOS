@@ -2,7 +2,7 @@ import UIKit
 import Charts
 import RealmSwift
 
-class PieChartController: UIViewController, UITabBarControllerDelegate, UITabBarDelegate{
+class PieChartController: UIViewController{
     @IBOutlet weak var pieChart: PieChartView!
     @IBOutlet weak var prevMonth: UIButton!
     @IBOutlet weak var nextMonth: UIButton!
@@ -11,7 +11,7 @@ class PieChartController: UIViewController, UITabBarControllerDelegate, UITabBar
     
     private var currentType: TransactionType = .expense
     private var currentMonth :(String, Int, Int)?
-    private var model :CategoryRepository = CategoryRepository()
+    private var model :CategoryRepository = CategoryRepository.repositoryInstance
     
     @IBAction func onChangeType(_ sender: UISegmentedControl) {
         switch segmentControl.selectedSegmentIndex
@@ -45,16 +45,12 @@ class PieChartController: UIViewController, UITabBarControllerDelegate, UITabBar
         updateHeader()
         
     }
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        let tabBarIndex = tabBarController.selectedIndex
-        if tabBarIndex == 2 {
-            model.readDb()
-            initializeElements()
-        }
+
+    override func viewWillAppear(_ animated: Bool) {
+        initializeElements()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tabBarController?.delegate = self
         initializeElements()
     }
     private func initializeElements(){
@@ -70,7 +66,7 @@ class PieChartController: UIViewController, UITabBarControllerDelegate, UITabBar
             dataEntries.append(dataEntry)
         }
         
-        let pieChartDataSet = PieChartDataSet(values: dataEntries, label: "Percentage of \(currentType)s per category for \(currentMonth?.0)")
+        let pieChartDataSet = PieChartDataSet(values: dataEntries, label: "Percentage of \(currentType)s per category for \(currentMonth!.0)")
         let pieChartData = PieChartData(dataSet: pieChartDataSet)
         pieChart.data = pieChartData
         pieChart.chartDescription?.enabled = false

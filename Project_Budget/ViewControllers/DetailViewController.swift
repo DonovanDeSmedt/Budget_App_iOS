@@ -55,12 +55,12 @@ class DetailViewController: UITableViewController{
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             tableView.beginUpdates()
+            let indexSet = NSMutableIndexSet()
+            indexSet.add(indexPath.section)
             if indexPath.row >= category.subcategories[indexPath.section].transactions.count {
                 print("Delete hole subcat")
                 model!.removeSubcategoryFromDb(category.subcategories[indexPath.section], of: category)
                 category.subcategories.remove(at: indexPath.section)
-                let indexSet = NSMutableIndexSet()
-                indexSet.add(indexPath.section)
                 tableView.deleteSections(indexSet as IndexSet, with: .automatic)
             }
             else {
@@ -68,7 +68,13 @@ class DetailViewController: UITableViewController{
                 let transaction = category.subcategories[indexPath.section].transactions[indexPath.row]
                 model!.removeTransactionFromDb(transaction, of: category.subcategories[indexPath.section], of: category)
                 category.subcategories[indexPath.section].transactions.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
+                if category.subcategories[indexPath.section].transactions.count == 0 {
+                    tableView.deleteSections(indexSet as IndexSet, with: .automatic)
+                    category.subcategories.remove(at: indexPath.section)
+                }
+                else{
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                }
             }
             
            

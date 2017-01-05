@@ -217,6 +217,7 @@
 				TargetAttributes = {
 					99D98B2C1DD61CFB002579F1 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = X95F39SMBT;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -448,6 +449,7 @@
 			baseConfigurationReference = 3A90CC60521683800E015384 /* Pods-Project_Budget.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = X95F39SMBT;
 				INFOPLIST_FILE = Project_Budget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "DonovanDeSmedt.Project-Budget";
@@ -461,6 +463,7 @@
 			baseConfigurationReference = 6B0CB4687D1B8FFA8CBFF9FE /* Pods-Project_Budget.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = X95F39SMBT;
 				INFOPLIST_FILE = Project_Budget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "DonovanDeSmedt.Project-Budget";

@@ -12,7 +12,7 @@ class CategoryRepository{
     var expenses:[Category]
     var revenues: [Category]
     
-    init(){
+    private init(){
         self.expenses = categories.filter {$0.type == .expense}
         self.revenues = categories.filter {$0.type == .revenue}
         // seedDb()
@@ -21,6 +21,8 @@ class CategoryRepository{
         
         readDb()
     }
+    
+    static let repositoryInstance = CategoryRepository()
     
     /*
      * DATABASE FUNCTIONS
@@ -119,48 +121,104 @@ class CategoryRepository{
         let originalObject = categories.filter {$0.name == category.name && $0.type == category.type}.first!
         originalObject.subcategories = category.subcategories
     }
-    func removeCategoryFromDb(_ category: Category){
+    
+    /*
+     * CATEGORY DB FUNCTIONS
+     */
+    func removeCategoryFromDb(_ category: Category, month: Int){
         let index = categories.index(of: category)!
         var originalObject = categories[index]
         
-        //Delete category and it's child objects from the db
-        for var subcategory in originalObject.subcategories{
-            for var transaction in subcategory.transactions {
-                removeObjectFromDb(&transaction)
-            }
-            removeObjectFromDb(&subcategory)
-        }
-        removeObjectFromDb(&originalObject)
+        //Check if there are subcategories with transactions in other months
+        let moreInOtherMonths = categoryHasTransactionsInOtherMonths(category: originalObject, month: month)
         
-        //Delete the object from the local list
-        categories.remove(at: index)
+        //If so, remove transactions of subcategeries of the given month
+        if moreInOtherMonths{
+            removeTransactions(of: originalObject, month: month)
+        }
+            
+        //else, remove category with all its subcategories and transactions
+        else{
+            //Delete category and it's child objects from the db
+            for var subcategory in originalObject.subcategories{
+                removeSubcategoryObject(subcategory, of: category)
+            }
+            
+            //Delete the object from the db
+            removeObjectFromDb(&originalObject)
+            
+            //Delete the object from the local list
+            categories.remove(at: index)
+        }
     }
+    
+    private func categoryHasTransactionsInOtherMonths(category: Category, month: Int) -> Bool{
+        for subcat in category.subcategories{
+            let hasMore = subcat.transactions.filter {$0.date.getMonthNumber() != month }.count != 0
+            if hasMore {
+                return true
+            }
+        }
+        return false
+    }
+    
+    /*
+     * SUBCATEGORY DB FUNCTIONS
+     */
     func removeSubcategoryFromDb(_ subcategory: Subcategory, of category: Category){
+        let originalObject = removeSubcategoryObject(subcategory, of: category)
+        
+        //If category has no more subcategories, delte category from db and from local list
+        if originalObject.subcategories.count == 0 {
+            removeCategoryFromDb(category, month: -1)
+        }
+        
+    }
+    private func removeSubcategoryObject(_ subcategory: Subcategory, of category: Category) -> Category{
         //Find original category object
-        let originalObject = categories.filter {$0.name == category.name && $0.type == category.type}.first!
+        var originalObject = categories.filter {$0.name == category.name && $0.type == category.type}.first!
         let index = originalObject.subcategories.index(where: {$0.name == subcategory.name})!
         
-        //Remove from local list
-        var originalSubcat :Subcategory?
+        var originalSubcat = originalObject.subcategories[index]
+        
+        
+        //Delete transactions from local list and db
+        for var transaction in originalSubcat.transactions {
+            removeTransactionObjects(transaction, of: subcategory, of: category)
+        }
         
         //Delete subcategory from local list
         do {
             let realm = try Realm()
             try! realm.write {
-                originalSubcat = originalObject.subcategories.remove(at: index)
+                originalObject.subcategories.remove(at: index)
             }
         } catch let error as NSError {
             fatalError(error.localizedDescription)
         }
         
-        
-        //Delete subcategory and its transactions from db
-        for var transaction in originalSubcat!.transactions {
-            removeObjectFromDb(&transaction)
-        }
+        //Delete subcategory from db
         removeObjectFromDb(&originalSubcat)
+        
+        return originalObject
+        
     }
+    
+    
+    /*
+     * TRANSACTION DB FUNCTIONS
+     */
     func removeTransactionFromDb(_ transaction: Transaction, of subcategory: Subcategory, of category: Category){
+        
+        //Remove transaction object from local list and from db
+        let originalSubcat = removeTransactionObjects(transaction, of: subcategory, of: category)
+        
+        //If subcategory has no more transactions, remove subcategory
+        if originalSubcat.transactions.count == 0{
+            removeSubcategoryFromDb(subcategory, of: category)
+        }
+    }
+    private func removeTransactionObjects(_ transaction: Transaction, of subcategory: Subcategory, of category: Category) -> Subcategory{
         //Find original category object
         let originalCat = categories.filter {$0.name == category.name && $0.type == category.type}.first!
         
@@ -183,8 +241,23 @@ class CategoryRepository{
         }
         //Delete transaction from db
         removeObjectFromDb(&originalTransaction)
-    
+        
+        return originalSubcat
     }
+    private func removeTransactions(of category: Category, month: Int){
+        for subcat in category.subcategories {
+            for transaction in subcat.transactions {
+                if transaction.date.getMonthNumber() == month {
+                    var transactionCopy = transaction
+                    removeTransactionFromDb(transaction, of: subcat, of: category)
+                }
+            }
+        }
+    }
+    /*
+     * GENERIC DB FUNCTIONS
+     */
+    
     private func removeObjectFromDb<E>(_ object: inout E){
         do {
             let realm = try Realm()
@@ -272,12 +345,7 @@ class CategoryRepository{
     }
     
     func categoryExist(with name: String, of type: TransactionType) -> Bool{
-        switch type {
-        case .expense:
-            return expenses.filter({$0.name.lowercased() == name}).first != nil
-        case .revenue:
-            return revenues.filter({$0.name.lowercased() == name}).first != nil
-        }
+        return categories.filter({$0.name.lowercased() == name && $0.type == type}).first != nil
     }
     
     func subCategoryExist(of category: Category, with name: String) -> Bool {

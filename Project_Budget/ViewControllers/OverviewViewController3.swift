@@ -15,7 +15,7 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var totalExpensesText: UILabel!
     @IBOutlet weak var totalRevenuesText: UILabel!
     
-    private var model = CategoryRepository()
+    private var model = CategoryRepository.repositoryInstance
     private var currentType : TransactionType = TransactionType.expense
     private var currentMonth :(String, Int, Int)?
     
@@ -62,7 +62,9 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
         overview.rowHeight = 95
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentType == .expense ? model.expenses.count : model.revenues.count
+        return currentType == .expense ?
+            model.expenses.filter{$0.subcategories.count != 0}.count :
+            model.revenues.filter{$0.subcategories.count != 0}.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "previewTransactionCell", for: indexPath) as! PreviewTransactionCell
@@ -73,7 +75,7 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
         cell.categegoryName.text = "\(category.name)"
         cell.amount.text = "€ \(model.getTotalAmount(of: category))"
         let represenation = model.calcRepresentation(category: category)
-        cell.representation.text = "Represens \(represenation.value)%"
+        cell.representation.text = "Represents \(represenation.value)%"
         //cell.progressView.transform = cell.progressView.transform.scaledBy(x: 1, y: 10)
         cell.progressView.setProgress(Float(represenation.percent), animated: false)
         cell.progressView.progressTintColor = UIColor().rgbToUIColor(category.color)
@@ -84,12 +86,12 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
         if editingStyle == .delete {
             tableView.beginUpdates()
             if currentType == .expense {
-                model.removeCategoryFromDb(model.expenses[indexPath.row])
+                model.removeCategoryFromDb(model.expenses[indexPath.row], month: currentMonth!.1)
                 model.expenses.remove(at: indexPath.row)
                 
             }
             else {
-                model.removeCategoryFromDb(model.revenues[indexPath.row])
+                model.removeCategoryFromDb(model.revenues[indexPath.row], month: currentMonth!.1)
                 model.revenues.remove(at: indexPath.row)
             }
             updateFooter()
