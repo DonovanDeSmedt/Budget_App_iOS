@@ -200,8 +200,8 @@
                     </tabBar>
                     <connections>
                         <segue destination="ywq-0a-47L" kind="relationship" relationship="viewControllers" id="IHt-hq-Pkk"/>
-                        <segue destination="hW6-1m-xlx" kind="relationship" relationship="viewControllers" id="lHR-d2-f5w"/>
                         <segue destination="QsP-0a-aKR" kind="relationship" relationship="viewControllers" id="kUg-7t-SUM"/>
+                        <segue destination="hW6-1m-xlx" kind="relationship" relationship="viewControllers" id="lHR-d2-f5w"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X9B-6t-vfP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -495,7 +495,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="€200" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6QN-8Q-7BM">
                                         <rect key="frame" x="326.5" y="7.5" width="43.5" height="20.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                        <color key="textColor" red="0.0021412681189999999" green="1" blue="0.1205016277" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.0" green="0.75849358974358971" blue="0.09394705367739635" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -640,11 +640,11 @@
             </objects>
             <point key="canvasLocation" x="948" y="273.91304347826087"/>
         </scene>
-        <!--Item-->
+        <!--Overview-->
         <scene sceneID="s9Q-eY-ihi">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ywq-0a-47L" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Zkz-pp-yKH"/>
+                    <tabBarItem key="tabBarItem" title="Overview" image="Page Overview 4 Filled" id="Zkz-pp-yKH"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="BpT-fA-y5u">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -659,7 +659,7 @@
             </objects>
             <point key="canvasLocation" x="-825" y="274"/>
         </scene>
-        <!--Bar chart-->
+        <!--Annual overview-->
         <scene sceneID="aHS-DG-Cxq">
             <objects>
                 <viewController id="Ras-4q-OoZ" customClass="BarCharViewController" customModule="Project_Budget" customModuleProvider="target" sceneMemberID="viewController">
@@ -698,7 +698,7 @@
                             <constraint firstItem="Zf5-vK-vLj" firstAttribute="leading" secondItem="sp5-vP-3tY" secondAttribute="leadingMargin" id="v27-TQ-DLm"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Bar chart" id="uMj-ey-t2E"/>
+                    <navigationItem key="navigationItem" title="Annual overview" id="uMj-ey-t2E"/>
                     <connections>
                         <outlet property="barView" destination="sBL-ET-oMF" id="jsC-eZ-446"/>
                         <outlet property="segmentControl" destination="Zf5-vK-vLj" id="sDb-uS-KF6"/>
@@ -708,11 +708,11 @@
             </objects>
             <point key="canvasLocation" x="-826.39999999999998" y="1091.6041979010495"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Annual-->
         <scene sceneID="Uv9-Mg-GLz">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hW6-1m-xlx" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="history" id="S2C-JJ-1le"/>
+                    <tabBarItem key="tabBarItem" title="Annual" image="Plus 1 Year" id="S2C-JJ-1le"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bJi-5Q-cBK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -727,7 +727,7 @@
             </objects>
             <point key="canvasLocation" x="-1618" y="1092"/>
         </scene>
-        <!--PieChart-->
+        <!--Monthly overview-->
         <scene sceneID="UsR-lq-cKF">
             <objects>
                 <viewController id="a4p-dR-FXH" customClass="PieChartController" customModule="Project_Budget" customModuleProvider="target" sceneMemberID="viewController">
@@ -812,7 +812,7 @@
                             <constraint firstItem="seH-yu-UZK" firstAttribute="leading" secondItem="kP9-lK-iRc" secondAttribute="leadingMargin" id="jHh-kh-NaS"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="PieChart" id="AhX-NO-MZY"/>
+                    <navigationItem key="navigationItem" title="Monthly overview" id="AhX-NO-MZY"/>
                     <connections>
                         <outlet property="monthText" destination="sn6-R3-ZQk" id="Wdj-KP-0P8"/>
                         <outlet property="nextMonth" destination="OfJ-gk-Q1O" id="seF-FI-gQK"/>
@@ -825,11 +825,11 @@
             </objects>
             <point key="canvasLocation" x="-826.39999999999998" y="-438.53073463268368"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Month-->
         <scene sceneID="1jB-7P-RJ2">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QsP-0a-aKR" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="mostViewed" id="WPl-aP-Wfu"/>
+                    <tabBarItem key="tabBarItem" title="Month" image="Plus 1 Month" id="WPl-aP-Wfu"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="w5D-ha-BRA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -864,6 +864,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Page Overview 4 Filled" width="25" height="25"/>
+        <image name="Plus 1 Month" width="25" height="25"/>
+        <image name="Plus 1 Year" width="25" height="25"/>
         <image name="Plus-50" width="50" height="50"/>
     </resources>
 </document>

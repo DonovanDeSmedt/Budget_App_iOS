@@ -44,7 +44,9 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
         default:
             break;
         }
+        showEmptyTableMessage(overview)
         overview.reloadData()
+        
     }
     
     private func updateHeader(){
@@ -56,7 +58,25 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        showEmptyTableMessage(tableView)
         return 1
+    }
+    private func showEmptyTableMessage(_ tableView: UITableView){
+        let messageLabel = UILabel(frame: CGRect(x:0, y:0, width:self.view.bounds.size.width, height: self.view.bounds.size.height))
+        messageLabel.text = "You don't have any \(currentType)s in \(currentMonth!.0) yet"
+        messageLabel.textColor = UIColor.black
+        messageLabel.numberOfLines = 0;
+        messageLabel.textAlignment = .center;
+        messageLabel.font = UIFont(name: "TrebuchetMS", size: 15)
+        messageLabel.sizeToFit()
+        
+        if model.calcAmountOfCategories(in: currentMonth!.1, of: currentType) == 0 {
+            tableView.backgroundView = messageLabel
+            tableView.separatorStyle = .none
+        }
+        else{
+            tableView.backgroundView = nil
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         overview.rowHeight = 95
@@ -114,6 +134,7 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
             let selectedIndex = overview.indexPathForSelectedRow!.row
             destination.category = currentType == .expense ? model.expenses[selectedIndex] : model.revenues[selectedIndex]
             destination.model = model
+            destination.currentMonth = currentMonth!
             print("Go to detailViewController")
         default:
             break

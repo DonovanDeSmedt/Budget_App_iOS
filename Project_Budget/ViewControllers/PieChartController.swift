@@ -73,14 +73,18 @@ class PieChartController: UIViewController{
         
         var colors: [UIColor] = []
         
-        for _ in 0..<data.count {
-            let red = Double(arc4random_uniform(256))
-            let green = Double(arc4random_uniform(256))
-            let blue = Double(arc4random_uniform(256))
-            
-            let color = UIColor(red: CGFloat(red/255), green: CGFloat(green/255), blue: CGFloat(blue/255), alpha: 1)
-            colors.append(color)
+        for var category in data {
+            colors.append(UIColor().rgbToUIColor(category.color))
         }
+        
+//        for _ in 0..<data.count {
+//            let red = Double(arc4random_uniform(256))
+//            let green = Double(arc4random_uniform(256))
+//            let blue = Double(arc4random_uniform(256))
+//            
+//            let color = UIColor(red: CGFloat(red/255), green: CGFloat(green/255), blue: CGFloat(blue/255), alpha: 1)
+//            colors.append(color)
+//        }
         pieChartDataSet.colors = colors
     }
     private func updateHeader(){

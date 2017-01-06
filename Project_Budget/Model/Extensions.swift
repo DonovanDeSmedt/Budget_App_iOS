@@ -58,17 +58,6 @@ extension Array {
 
 extension UIColor {
     func rgb() -> Int? {
-        
-        //        let redIn: CGFloat = 1
-        //        let greenIn: CGFloat = 0.5
-        //        let blueIn: CGFloat = 0.75
-        //
-        //        let redIntIn = Int(redIn * 255)
-        //        let greenIntIn = Int(greenIn * 255)
-        //        let blueIntIn = Int(blueIn * 255)
-        //
-        //        let color = blueIntIn << 16 + greenIntIn << 8 + redIntIn
-        //        return color
         var fRed : CGFloat = 0
         var fGreen : CGFloat = 0
         var fBlue : CGFloat = 0
@@ -80,7 +69,7 @@ extension UIColor {
             let iAlpha = Int(fAlpha * 255.0)
             
             //  (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue).
-            let rgb = (iAlpha << 24) + (iRed << 16) + (iGreen << 8) + iBlue
+            let rgb = (iAlpha << 24) + (iBlue << 16) + (iGreen << 8) + iRed
             return rgb
         } else {
             // Could not extract RGBA components:

@@ -172,7 +172,24 @@ class CategoryRepository{
         if originalObject.subcategories.count == 0 {
             removeCategoryFromDb(category, month: -1)
         }
+    }
+    func removeSubcategoryFromDb(_ subcategory: Subcategory, of category: Category, month: Int){
+        let originalObject = categories.filter {$0.name == category.name && $0.type == category.type}.first!
+        let originalSubcat = originalObject.subcategories.filter{$0.name == subcategory.name}.first!
         
+        //If subcategory exists in other months, just delete all the transactions of this month
+        if subcategoryHasTransactionsInOtherMonths(subcategory: originalSubcat, month: month) {
+            for transaction in subcategory.transactions {
+                removeTransactionObjects(transaction, of: subcategory, of: category)
+            }
+        }
+        // else remove the subcategory and all its transactions
+        else{
+            removeSubcategoryFromDb(subcategory, of: category)
+        }
+    }
+    private func subcategoryHasTransactionsInOtherMonths(subcategory: Subcategory, month: Int) -> Bool{
+        return subcategory.transactions.filter {$0.date.getMonthNumber() != month }.count != 0
     }
     private func removeSubcategoryObject(_ subcategory: Subcategory, of category: Category) -> Category{
         //Find original category object
@@ -209,7 +226,7 @@ class CategoryRepository{
      * TRANSACTION DB FUNCTIONS
      */
     func removeTransactionFromDb(_ transaction: Transaction, of subcategory: Subcategory, of category: Category){
-        
+    
         //Remove transaction object from local list and from db
         let originalSubcat = removeTransactionObjects(transaction, of: subcategory, of: category)
         
@@ -305,6 +322,15 @@ class CategoryRepository{
         
         self.expenses = newList.filter {$0.type == .expense}
         self.revenues = newList.filter {$0.type == .revenue}
+    }
+    func calcAmountOfCategories(in month: Int, of type: TransactionType) -> Int{
+        return self.expenses.filter
+            {
+                $0.type == type &&
+                $0.subcategories.filter {
+                    $0.transactions.filter {$0.date.getMonthNumber() == month}.count > 0
+                }.count > 0
+            }.count
     }
     func calcRepresentation(category: Category) -> (percent: Double, value: Int){
         var total:Double

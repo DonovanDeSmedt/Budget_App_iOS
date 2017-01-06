@@ -5,7 +5,8 @@ class DetailViewController: UITableViewController{
     var category: Category!
     var model :CategoryRepository?
     let dateFormatter = DateFormatter()
-    
+    var currentMonth :(String, Int, Int)?
+
     
     var subcategories: [(String, [String])] = [("Subcategory1", ["item1", "item2", "item3", "item4", "totaal:"]),("Subcategory1", ["item1", "item2", "item3", "item4", "totaal:"]),("Subcategory1", ["item1", "item2", "item3", "item4", "totaal:"]),("Subcategory1", ["item1", "item2", "item3", "item4", "totaal:"])]
  
@@ -59,7 +60,7 @@ class DetailViewController: UITableViewController{
             indexSet.add(indexPath.section)
             if indexPath.row >= category.subcategories[indexPath.section].transactions.count {
                 print("Delete hole subcat")
-                model!.removeSubcategoryFromDb(category.subcategories[indexPath.section], of: category)
+                model!.removeSubcategoryFromDb(category.subcategories[indexPath.section], of: category, month: currentMonth!.1)
                 category.subcategories.remove(at: indexPath.section)
                 tableView.deleteSections(indexSet as IndexSet, with: .automatic)
             }
