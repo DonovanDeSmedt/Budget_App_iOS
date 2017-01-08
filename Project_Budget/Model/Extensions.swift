@@ -87,4 +87,20 @@ extension UIColor {
         return UIColor(red: redOut, green: greenOut, blue: blueOut, alpha: 1)
     }
     
+    
+    @nonobjc static var clr_blue: UIColor!
+    
+    static func initWithColorScheme(cs: ColorScheme){
+        switch cs{
+        case .Default:
+            clr_blue = green
+        case .Custom:
+            clr_blue = red
+        }
+    }
+    
+}
+
+enum ColorScheme{
+    case Default, Custom
 }

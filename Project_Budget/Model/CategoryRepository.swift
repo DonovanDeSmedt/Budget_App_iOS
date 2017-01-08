@@ -346,6 +346,16 @@ class CategoryRepository{
         let percent = Double(category.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount}}) / Double(total)
         return (percent: percent, value: Int(percent*100))
     }
+    func calcTotalAmount(of type: TransactionType) -> Double{
+        let list = type == .expense ? expenses : revenues
+        return list.reduce(0) {
+            $0 + $1.subcategories.reduce(0) {
+                $0 + $1.transactions.reduce(0) {
+                    $0 + $1.amount
+                }
+            }
+        }
+    }
     
     
     func getTotalAmount(of category: Category) -> Double{

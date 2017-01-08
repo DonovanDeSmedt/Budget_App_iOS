@@ -18,6 +18,10 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
     private var model = CategoryRepository.repositoryInstance
     private var currentType : TransactionType = TransactionType.expense
     private var currentMonth :(String, Int, Int)?
+    private var isTick :Bool = false
+    
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +32,10 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
         updateHeader()
         model.filterCategories(month: currentMonth!.1, year: currentMonth!.2)
         
+        (segmentControl.subviews[0] as UIView).tintColor = Style.sectionHeaderBackgroundColor
+        (segmentControl.subviews[1] as UIView).tintColor = Style.sectionHeaderBackgroundColor
+        
     }
-    
-    
     
     
     @IBAction func OnChangeType(_ sender: UISegmentedControl) {
@@ -96,7 +101,14 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
         cell.amount.text = "€ \(model.getTotalAmount(of: category))"
         let represenation = model.calcRepresentation(category: category)
         cell.representation.text = "Represents \(represenation.value)%"
-        //cell.progressView.transform = cell.progressView.transform.scaledBy(x: 1, y: 10)
+        
+        if !isTick {
+            cell.progressView.transform = cell.progressView.transform.scaledBy(x: 1, y: 2)
+            cell.progressView.layer.cornerRadius = 15.0
+            cell.progressView.clipsToBounds = true
+        }
+        
+        
         cell.progressView.setProgress(Float(represenation.percent), animated: false)
         cell.progressView.progressTintColor = UIColor().rgbToUIColor(category.color)
         return cell
@@ -121,6 +133,7 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        isTick = true
         switch segue.identifier! {
         case "add":
             let navigationController = segue.destination as! UINavigationController
@@ -159,6 +172,10 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     @IBAction func unwindFrommDetail(_ segue: UIStoryboardSegue){
+        //TODO
+        //We can to circumnavigate this method by also removing the object from the model.expenses or .revenues
+        //besides removing it from the model.categories
+        //model.filterCategories(month: currentMonth!.1, year: currentMonth!.2)
         updateFooter()
         overview.reloadData()
         print("Detail")
@@ -180,9 +197,5 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
         updateHeader()
         updateFooter()
     }
-    private func filterData() {
-        
-    }
-    
 }
 

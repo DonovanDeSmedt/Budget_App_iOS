@@ -50,4 +50,3 @@ enum TransactionType: Int {
     case expense = 0
     case revenue = 1
 }
-

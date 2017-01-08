@@ -6,6 +6,8 @@ class BarCharViewController: UIViewController{
     
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var barView: BarChartView!
+    @IBOutlet weak var lblTotalAmount: UILabel!
+    @IBOutlet weak var lblTotalTitle: UILabel!
     private var model :CategoryRepository = CategoryRepository.repositoryInstance
     private var currentType : TransactionType = TransactionType.expense
 
@@ -13,6 +15,8 @@ class BarCharViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        (segmentControl.subviews[0] as UIView).tintColor = Style.sectionHeaderBackgroundColor
+        (segmentControl.subviews[1] as UIView).tintColor = Style.sectionHeaderBackgroundColor
         let data = currentType == .expense ? model.expenses : model.revenues
         updateCharWithData(data)
     }
@@ -31,11 +35,23 @@ class BarCharViewController: UIViewController{
         default:
             break;
         }
+        updateHeader()
         let data = currentType == .expense ? model.expenses : model.revenues
         updateCharWithData(data)
     }
+    private func updateHeader(){
+        lblTotalAmount.text = "€ \(model.calcTotalAmount(of: currentType))"
+        if currentType == .expense {
+            lblTotalAmount.textColor = UIColor.red
+        }
+        else if currentType == .revenue {
+            lblTotalAmount.textColor = Style.sectionHeaderBackgroundColor
+        }
+        lblTotalTitle.text = "Total annual \(currentType)s"
+    }
     private func updateCharWithData(_ data: [Category]){
-
+        updateHeader()
+        
         let formatter = BarChartFormatter()
         let xaxis:XAxis = XAxis()
         
@@ -56,14 +72,6 @@ class BarCharViewController: UIViewController{
             colors.append(UIColor().rgbToUIColor(category.color))
         }
         
-//        for _ in 0..<data.count {
-//            let red = Double(arc4random_uniform(256))
-//            let green = Double(arc4random_uniform(256))
-//            let blue = Double(arc4random_uniform(256))
-//            
-//            let color = UIColor(red: CGFloat(red/255), green: CGFloat(green/255), blue: CGFloat(blue/255), alpha: 1)
-//            colors.append(color)
-//        }
         chartDataSet.colors = colors
         
         
@@ -73,7 +81,7 @@ class BarCharViewController: UIViewController{
         barView.xAxis.labelPosition = .bottom
          barView.xAxis.valueFormatter = xaxis.valueFormatter
         barView.chartDescription?.enabled = false
-        barView.legend.enabled = true
+        barView.legend.enabled = false
         barView.leftAxis.axisMinimum = 0.0
         barView.leftAxis.axisMaximum = 100.0
         barView.rightAxis.enabled = false

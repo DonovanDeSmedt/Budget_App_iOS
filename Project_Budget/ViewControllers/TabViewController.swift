@@ -7,6 +7,8 @@ class TabViewController: UITabBarController, UITabBarControllerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.delegate = self
+        
+        UITabBar.appearance().backgroundColor = UIColor.yellow
     }
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         let tabBarIndex = tabBarController.selectedIndex
@@ -14,4 +16,5 @@ class TabViewController: UITabBarController, UITabBarControllerDelegate{
             model.readDb()
         }
     }
+    
 }

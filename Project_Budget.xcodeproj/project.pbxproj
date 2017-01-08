@@ -21,6 +21,7 @@
 		9960D11A1DF6C2FC00044169 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9960D1191DF6C2FC00044169 /* CategoryCell.swift */; };
 		996384231E12E3EB0072B6B5 /* BarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996384221E12E3EB0072B6B5 /* BarChartViewController.swift */; };
 		996384251E12E92B0072B6B5 /* PieChartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996384241E12E92B0072B6B5 /* PieChartController.swift */; };
+		99874E711E2298E600936AF8 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99874E701E2298E600936AF8 /* Style.swift */; };
 		99942CF51E16D89A004A768B /* BarChartFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99942CF41E16D89A004A768B /* BarChartFormatter.swift */; };
 		99ACE7951E0D84F400F6FBA5 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ACE7941E0D84F400F6FBA5 /* Extensions.swift */; };
 		99C7A1A71E01402600F94398 /* SubCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C7A1A61E01402600F94398 /* SubCategory.swift */; };
@@ -50,6 +51,7 @@
 		9960D1191DF6C2FC00044169 /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		996384221E12E3EB0072B6B5 /* BarChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartViewController.swift; sourceTree = "<group>"; };
 		996384241E12E92B0072B6B5 /* PieChartController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartController.swift; sourceTree = "<group>"; };
+		99874E701E2298E600936AF8 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		99942CF41E16D89A004A768B /* BarChartFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartFormatter.swift; sourceTree = "<group>"; };
 		99ACE7941E0D84F400F6FBA5 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		99C7A1A61E01402600F94398 /* SubCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCategory.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				99C7A1A81E01403300F94398 /* Category.swift */,
 				99ACE7941E0D84F400F6FBA5 /* Extensions.swift */,
 				99942CF41E16D89A004A768B /* BarChartFormatter.swift */,
+				99874E701E2298E600936AF8 /* Style.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				990061471DE08BA80065198B /* TabViewController.swift in Sources */,
 				991834511DE1A6FE0035FD5E /* ColorPickerViewController.swift in Sources */,
 				990061431DE062B90065198B /* CategoryRepository.swift in Sources */,
+				99874E711E2298E600936AF8 /* Style.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

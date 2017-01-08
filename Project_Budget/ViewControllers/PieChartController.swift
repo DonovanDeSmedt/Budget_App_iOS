@@ -8,6 +8,8 @@ class PieChartController: UIViewController{
     @IBOutlet weak var nextMonth: UIButton!
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var monthText: UILabel!
+    @IBOutlet weak var lblTotalTitle: UILabel!
+    @IBOutlet weak var lblTotalAmount: UILabel!
     
     private var currentType: TransactionType = .expense
     private var currentMonth :(String, Int, Int)?
@@ -25,6 +27,7 @@ class PieChartController: UIViewController{
         }
         let data = currentType == .expense ? model.expenses : model.revenues
         updateChartWithData(data)
+       
     }
     
     @IBAction func onChangeMonth(_ sender: UIButton) {
@@ -42,8 +45,7 @@ class PieChartController: UIViewController{
         model.filterCategories(month: currentMonth!.1, year: currentMonth!.2)
         let data = currentType == .expense ? model.expenses : model.revenues
         updateChartWithData(data)
-        updateHeader()
-        
+        updateHeaderMonth()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -51,15 +53,19 @@ class PieChartController: UIViewController{
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        (segmentControl.subviews[0] as UIView).tintColor = Style.sectionHeaderBackgroundColor
+        (segmentControl.subviews[1] as UIView).tintColor = Style.sectionHeaderBackgroundColor
         initializeElements()
     }
     private func initializeElements(){
         currentMonth = (Date().getMonthName(), Date().getMonthNumber(), Date().getYear())
         model.filterCategories(month: currentMonth!.1, year: currentMonth!.2)
         updateChartWithData(model.expenses)
-        updateHeader()
+        updateHeaderMonth()
     }
     private func updateChartWithData(_ data: [Category]){
+        updateHeaderTotal()
+        
         var dataEntries: [PieChartDataEntry] = []
         for i in 0..<data.count {
             let dataEntry = PieChartDataEntry(value: Double(model.calcRepresentation(category: data[i]).value), label: data[i].name)
@@ -76,18 +82,21 @@ class PieChartController: UIViewController{
         for var category in data {
             colors.append(UIColor().rgbToUIColor(category.color))
         }
-        
-//        for _ in 0..<data.count {
-//            let red = Double(arc4random_uniform(256))
-//            let green = Double(arc4random_uniform(256))
-//            let blue = Double(arc4random_uniform(256))
-//            
-//            let color = UIColor(red: CGFloat(red/255), green: CGFloat(green/255), blue: CGFloat(blue/255), alpha: 1)
-//            colors.append(color)
-//        }
+        pieChart.chartDescription?.enabled = false
+        pieChart.legend.enabled = false
         pieChartDataSet.colors = colors
     }
-    private func updateHeader(){
+    private func updateHeaderMonth(){
         monthText.text = "\(currentMonth!.0) \(currentMonth!.2)"
+    }
+    private func updateHeaderTotal(){
+        lblTotalTitle.text = "Total monthly \(currentType)s"
+        if currentType == .expense {
+            lblTotalAmount.textColor = UIColor.red
+        }
+        else{
+            lblTotalAmount.textColor = Style.sectionHeaderBackgroundColor
+        }
+        lblTotalAmount.text = "€ \(model.calcTotalAmount(of: currentType))"
     }
 }

@@ -57,6 +57,10 @@ class AddViewController: UIViewController, UIPickerViewDataSource, UIPickerViewD
         super.viewDidLoad()
         self.hideKeyboard()
         
+        
+        (segmentControl.subviews[0] as UIView).tintColor = Style.sectionHeaderBackgroundColor
+        (segmentControl.subviews[1] as UIView).tintColor = Style.sectionHeaderBackgroundColor
+        
         // set corner radious
         colorPreview.layer.cornerRadius = self.colorPreview.layer.frame.width/6
         // set default background color
