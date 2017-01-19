@@ -328,7 +328,8 @@ class CategoryRepository{
         self.revenues = newList.filter {$0.type == .revenue}
     }
     func calcAmountOfCategories(in month: Int, of type: TransactionType) -> Int{
-        return self.expenses.filter
+        let list = type == .expense ? self.expenses : self.revenues
+        return list.filter
             {
                 $0.type == type &&
                 $0.subcategories.filter {
