@@ -18,7 +18,6 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
     private var model = CategoryRepository.repositoryInstance
     private var currentType : TransactionType = TransactionType.expense
     private var currentMonth :(String, Int, Int)?
-    private var isTick :Bool = false
     
     
 
@@ -51,7 +50,6 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
         }
         showEmptyTableMessage(overview)
         overview.reloadData()
-        
     }
     
     private func updateHeader(){
@@ -101,12 +99,11 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
         cell.amount.text = "€ \(model.getTotalAmount(of: category))"
         let represenation = model.calcRepresentation(category: category)
         cell.representation.text = "Represents \(represenation.value)%"
-        
-        if !isTick {
-            cell.progressView.transform = cell.progressView.transform.scaledBy(x: 1, y: 2)
-            cell.progressView.layer.cornerRadius = 15.0
-            cell.progressView.clipsToBounds = true
-        }
+        let thickNess = CGAffineTransform.identity
+        cell.progressView.transform = thickNess.scaledBy(x: 1, y: 2)
+    
+        cell.progressView.layer.cornerRadius = 5.0
+        cell.progressView.clipsToBounds = true
         
         
         cell.progressView.setProgress(Float(represenation.percent), animated: false)
@@ -133,7 +130,6 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        isTick = true
         switch segue.identifier! {
         case "add":
             let navigationController = segue.destination as! UINavigationController
@@ -172,10 +168,6 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     @IBAction func unwindFrommDetail(_ segue: UIStoryboardSegue){
-        //TODO
-        //We can to circumnavigate this method by also removing the object from the model.expenses or .revenues
-        //besides removing it from the model.categories
-        //model.filterCategories(month: currentMonth!.1, year: currentMonth!.2)
         updateFooter()
         overview.reloadData()
         print("Detail")

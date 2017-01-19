@@ -117,7 +117,7 @@ class CategoryRepository{
         }
     }
     func updateObjectDb(category: Category){
-        //objecten zoeken en updaten
+        //search and update object
         let originalObject = categories.filter {$0.name == category.name && $0.type == category.type}.first!
         originalObject.subcategories = category.subcategories
     }
@@ -193,8 +193,11 @@ class CategoryRepository{
     }
     private func removeSubcategoryObject(_ subcategory: Subcategory, of category: Category) -> Category{
         //Find original category object
-        var originalObject = categories.filter {$0.name == category.name && $0.type == category.type}.first!
+        let originalObject = categories.filter {$0.name == category.name && $0.type == category.type}.first!
         let index = originalObject.subcategories.index(where: {$0.name == subcategory.name})!
+        let indexList = category.type == .expense ?
+            expenses.index(where: {$0.name == category.name})! :
+            revenues.index(where: {$0.name == category.name})!
         
         var originalSubcat = originalObject.subcategories[index]
         
@@ -209,6 +212,7 @@ class CategoryRepository{
             let realm = try Realm()
             try! realm.write {
                 originalObject.subcategories.remove(at: index)
+                category.type == .expense ? expenses.remove(at: indexList) : revenues.remove(at: indexList)
             }
         } catch let error as NSError {
             fatalError(error.localizedDescription)
@@ -335,10 +339,10 @@ class CategoryRepository{
     func calcRepresentation(category: Category) -> (percent: Double, value: Int){
         var total:Double
         if(category.type == .expense){
-            total = getTotalExpenses()
+            total = Double(getTotalExpenses())
         }
         else{
-            total = getTotalRevenues()
+            total = Double(getTotalRevenues())
         }
         if total == 0 {
             return (percent: 0.0, value: 0)
@@ -358,17 +362,17 @@ class CategoryRepository{
     }
     
     
-    func getTotalAmount(of category: Category) -> Double{
-        return category.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} }
+    func getTotalAmount(of category: Category) -> Int{
+        return Int(category.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} })
     }
-    func getTotalAmount(of subcategory: Subcategory) -> Double{
-        return subcategory.transactions.reduce(0) {$0 + $1.amount}
+    func getTotalAmount(of subcategory: Subcategory) -> Int{
+        return Int(subcategory.transactions.reduce(0) {$0 + $1.amount})
     }
-    func getTotalExpenses() -> Double{
-        return expenses.reduce(0) { $0 + $1.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} } }
+    func getTotalExpenses() -> Int{
+        return Int(expenses.reduce(0) { $0 + $1.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} } })
     }
-    func getTotalRevenues() -> Double {
-        return revenues.reduce(0) { $0 + $1.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} } }
+    func getTotalRevenues() -> Int {
+        return Int(revenues.reduce(0) { $0 + $1.subcategories.reduce(0) {$0 + $1.transactions.reduce(0) {$0 + $1.amount} } })
     }
     
     

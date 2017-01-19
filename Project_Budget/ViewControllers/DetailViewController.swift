@@ -7,8 +7,6 @@ class DetailViewController: UITableViewController{
     let dateFormatter = DateFormatter()
     var currentMonth :(String, Int, Int)?
 
-    
-    var subcategories: [(String, [String])] = [("Subcategory1", ["item1", "item2", "item3", "item4", "totaal:"]),("Subcategory1", ["item1", "item2", "item3", "item4", "totaal:"]),("Subcategory1", ["item1", "item2", "item3", "item4", "totaal:"]),("Subcategory1", ["item1", "item2", "item3", "item4", "totaal:"])]
  
     override func viewDidLoad() {
         tableView.delegate = self
@@ -40,15 +38,15 @@ class DetailViewController: UITableViewController{
         if indexPath.row == (category.subcategories[indexPath.section].transactions.count) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "footerCell") as! CustomFooterCell
             cell.subcategoryName.text = category.subcategories[indexPath.section].name
-            cell.subcategoryTotal.text = "€\(model!.getTotalAmount(of: category.subcategories[indexPath.section]))"
+            cell.subcategoryTotal.text = "€\(Int(model!.getTotalAmount(of: category.subcategories[indexPath.section])))"
             return cell
         }
             
-        //InhoudCell
+        //ContentCell
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath) as! DetailCell
             cell.itemName.text = "\(dateFormatter.string(from: category.subcategories[indexPath.section].transactions[indexPath.row].date))"
-            cell.itemPrice.text = "€\(category.subcategories[indexPath.section].transactions[indexPath.row].amount)"
+            cell.itemPrice.text = "€\(Int(category.subcategories[indexPath.section].transactions[indexPath.row].amount))"
             return cell
         }
     }

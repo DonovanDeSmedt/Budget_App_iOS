@@ -297,7 +297,7 @@ class AddViewController: UIViewController, UIPickerViewDataSource, UIPickerViewD
         addBtnClicked(btnAddSubCat)
         
     }
-    @IBAction func addNewItem(_ sender: UIButton) {
+    @IBAction func addNewItem(_ sender: UIBarButtonItem) {
         //Inputvalidation
         guard let catName = txfCategory.text, !catName.isEmpty else{
             updateValidation(for: txfCategory, valid: false)

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/Model/CategoryRepository.swift"
-            timestampString = "505340888.638859"
+            timestampString = "506516723.566579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "removeCategoryFromDb(_:month:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/Model/CategoryRepository.swift"
-            timestampString = "505597205.618687"
+            timestampString = "506516723.566579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
+            startingLineNumber = "276"
+            endingLineNumber = "276"
             landmarkName = "removeTransactions(of:month:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/Model/CategoryRepository.swift"
-            timestampString = "505418656.258447"
+            timestampString = "506516723.566579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
             landmarkName = "removeSubcategoryFromDb(_:of:month:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/ViewControllers/OverviewViewController3.swift"
-            timestampString = "505597205.618687"
+            timestampString = "506022330.23357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
             landmarkName = "OnChangeType(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/ViewControllers/OverviewViewController3.swift"
-            timestampString = "505597205.618687"
+            timestampString = "506022330.23357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
             landmarkName = "showEmptyTableMessage(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/ViewControllers/OverviewViewController3.swift"
-            timestampString = "505597205.618687"
+            timestampString = "506022330.23357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
             landmarkName = "showEmptyTableMessage(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/Model/CategoryRepository.swift"
-            timestampString = "505597205.618687"
+            timestampString = "506516723.566579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "333"
-            endingLineNumber = "333"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
             landmarkName = "calcAmountOfCategories(in:of:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/Model/CategoryRepository.swift"
-            timestampString = "505597205.618687"
+            timestampString = "506516723.566579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "359"
-            endingLineNumber = "359"
+            startingLineNumber = "367"
+            endingLineNumber = "367"
             landmarkName = "CategoryRepository"
             landmarkType = "3">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/ViewControllers/OverviewViewController3.swift"
-            timestampString = "505595488.611631"
+            timestampString = "506022330.23357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -202,27 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/ViewControllers/OverviewViewController3.swift"
-            timestampString = "505597205.618687"
+            timestampString = "506022330.23357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
-            landmarkName = "unwindFrommDetail(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Project_Budget/ViewControllers/OverviewViewController3.swift"
-            timestampString = "505597205.618687"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -234,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/Model/CategoryRepository.swift"
-            timestampString = "505596815.097316"
+            timestampString = "506516723.566579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
             landmarkName = "removeSubcategoryObject(_:of:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -250,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/Model/CategoryRepository.swift"
-            timestampString = "505596866.98594"
+            timestampString = "506516723.566579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "199"
-            endingLineNumber = "199"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
             landmarkName = "removeSubcategoryObject(_:of:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -266,13 +250,77 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Project_Budget/Model/CategoryRepository.swift"
-            timestampString = "505597205.618687"
+            timestampString = "506516723.566579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
             landmarkName = "removeSubcategoryObject(_:of:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Project_Budget/Model/CategoryRepository.swift"
+            timestampString = "506516723.566579"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "readDb()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Project_Budget/Model/CategoryRepository.swift"
+            timestampString = "506516723.566579"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "readDb()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Project_Budget.CategoryRepository.readDb () -&gt; ()"
+                  moduleName = "Project_Budget"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/donovandesmedt/Documents/Cirriculum/Mobile/iOS/Project/Project_Budget/Project_Budget/Model/CategoryRepository.swift"
+                  timestampString = "506516487.028947"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93"
+                  offsetFromSymbolStart = "477">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Project_Budget.CategoryRepository.(readDb () -&gt; ()).(closure #1)"
+                  moduleName = "Project_Budget"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/donovandesmedt/Documents/Cirriculum/Mobile/iOS/Project/Project_Budget/Project_Budget/Model/CategoryRepository.swift"
+                  timestampString = "506516487.030119"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
