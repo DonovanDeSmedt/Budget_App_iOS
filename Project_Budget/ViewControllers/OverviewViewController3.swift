@@ -126,6 +126,7 @@ class OverviewViewController3: UIViewController, UITableViewDelegate, UITableVie
             updateFooter()
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
+            tableView.reloadData()
         }
     }
     

@@ -195,9 +195,6 @@ class CategoryRepository{
         //Find original category object
         let originalObject = categories.filter {$0.name == category.name && $0.type == category.type}.first!
         let index = originalObject.subcategories.index(where: {$0.name == subcategory.name})!
-        let indexList = category.type == .expense ?
-            expenses.index(where: {$0.name == category.name})! :
-            revenues.index(where: {$0.name == category.name})!
         
         var originalSubcat = originalObject.subcategories[index]
         
@@ -212,7 +209,6 @@ class CategoryRepository{
             let realm = try Realm()
             try! realm.write {
                 originalObject.subcategories.remove(at: index)
-                category.type == .expense ? expenses.remove(at: indexList) : revenues.remove(at: indexList)
             }
         } catch let error as NSError {
             fatalError(error.localizedDescription)
@@ -305,7 +301,9 @@ class CategoryRepository{
                 let newSubcat = Subcategory()
                 newSubcat.name = subcat.name
                 
-                let transactionList = subcat.transactions.filter {$0.date.getMonthNumber() == month && $0.date.getYear() == year}
+                let transactionList = subcat.transactions
+                    .filter { $0.date.getMonthNumber() == month && $0.date.getYear() == year }
+                    .sorted { $0.date < $1.date}
                 
                 let tussenLijst = List<Transaction>(transactionList)
                 newSubcat.transactions = tussenLijst
@@ -324,8 +322,12 @@ class CategoryRepository{
             return subcatList.count > 0
         }
         
-        self.expenses = newList.filter {$0.type == .expense}
-        self.revenues = newList.filter {$0.type == .revenue}
+        self.expenses = newList
+                        .filter { $0.type == .expense }
+                        .sorted { calcRepresentation(category: $0).1 > calcRepresentation(category: $1).1 }
+        self.revenues = newList
+                        .filter { $0.type == .revenue }
+                        .sorted { calcRepresentation(category: $0).1 > calcRepresentation(category: $1).1 }
     }
     func calcAmountOfCategories(in month: Int, of type: TransactionType) -> Int{
         let list = type == .expense ? self.expenses : self.revenues

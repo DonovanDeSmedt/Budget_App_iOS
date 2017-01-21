@@ -49,6 +49,7 @@ class PieChartController: UIViewController{
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        segmentControl.selectedSegmentIndex = currentType == .expense ? 0 : 1
         initializeElements()
     }
     override func viewDidLoad() {
@@ -60,7 +61,12 @@ class PieChartController: UIViewController{
     private func initializeElements(){
         currentMonth = (Date().getMonthName(), Date().getMonthNumber(), Date().getYear())
         model.filterCategories(month: currentMonth!.1, year: currentMonth!.2)
-        updateChartWithData(model.expenses)
+        if currentType == .expense {
+            updateChartWithData(model.expenses)
+        }
+        else{
+            updateChartWithData(model.revenues)
+        }
         updateHeaderMonth()
     }
     private func updateChartWithData(_ data: [Category]){

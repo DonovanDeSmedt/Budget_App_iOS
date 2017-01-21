@@ -25,7 +25,7 @@ class DetailViewController: UITableViewController{
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if(section != 0){
+        if section != 0 {
             return 40.0
         }
         return 0
@@ -56,14 +56,14 @@ class DetailViewController: UITableViewController{
             tableView.beginUpdates()
             let indexSet = NSMutableIndexSet()
             indexSet.add(indexPath.section)
+            //Delete complete subcategory
             if indexPath.row >= category.subcategories[indexPath.section].transactions.count {
-                print("Delete hole subcat")
                 model!.removeSubcategoryFromDb(category.subcategories[indexPath.section], of: category, month: currentMonth!.1)
                 category.subcategories.remove(at: indexPath.section)
                 tableView.deleteSections(indexSet as IndexSet, with: .automatic)
             }
+            //Delete one transaction
             else {
-                print("Delete one transaction")
                 let transaction = category.subcategories[indexPath.section].transactions[indexPath.row]
                 model!.removeTransactionFromDb(transaction, of: category.subcategories[indexPath.section], of: category)
                 category.subcategories[indexPath.section].transactions.remove(at: indexPath.row)
@@ -75,10 +75,8 @@ class DetailViewController: UITableViewController{
                     tableView.deleteRows(at: [indexPath], with: .automatic)
                 }
             }
-            
-           
             tableView.endUpdates()
-            
+            tableView.reloadData()
         }
     }
     

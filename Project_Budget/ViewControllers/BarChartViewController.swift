@@ -23,6 +23,7 @@ class BarCharViewController: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         model.readDb()
         let data = currentType == .expense ? model.expenses : model.revenues
+        segmentControl.selectedSegmentIndex = currentType == .expense ? 0 : 1
         updateCharWithData(data)
     }
     @IBAction func onChangeType(_ sender: UISegmentedControl) {

@@ -91,13 +91,10 @@ class AddViewController: UIViewController, UIPickerViewDataSource, UIPickerViewD
     }
     
     func updateListCategories(){
-//        pickOptionCat = (currentType == .expense ? categoryRepository?.expenses.map {$0.name} : categoryRepository?.revenues.map {$0.name})!
         pickOptionCat = categoryRepository!.categories.filter {$0.type == currentType}.map {$0.name}
     }
-    // Override iPhone behavior that presents a popover as fullscreen.
-    // i.e. now it shows same popover box within on iPhone & iPad
+
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        
         // show popover box for iPhone and iPad both
         return UIModalPresentationStyle.none
     }
@@ -237,10 +234,18 @@ class AddViewController: UIViewController, UIPickerViewDataSource, UIPickerViewD
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == catPickerview {
+            if txfCategory.text!.isEmpty {
+                txfCategory.text = pickOptionCat[0]
+                setOptionsSubcategory()
+            }
+            
             return pickOptionCat[row]
         }
         
         if pickerView == subCatPickerview {
+            if txfSubcategory.text!.isEmpty {
+                txfSubcategory.text = pickOptionSubCat[0]
+            }
             return pickOptionSubCat[row]
         }
 
@@ -250,14 +255,18 @@ class AddViewController: UIViewController, UIPickerViewDataSource, UIPickerViewD
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == catPickerview && pickOptionCat.count > 0{
             txfCategory.text = pickOptionCat[row]
-            let selectedCategory = categoryRepository?.getCategory(with: txfCategory.text!.lowercased(), of: currentType)
-            pickOptionSubCat = (selectedCategory?.subcategories.map {$0.name})!
+            txfSubcategory.text = ""
+            setOptionsSubcategory()
         }
         
         if pickerView == subCatPickerview && pickOptionSubCat.count > 0 {
             txfSubcategory.text = pickOptionSubCat[row]
         }
         
+    }
+    private func setOptionsSubcategory(){
+        let selectedCategory = categoryRepository?.getCategory(with: txfCategory.text!.lowercased(), of: currentType)
+        pickOptionSubCat = (selectedCategory?.subcategories.map {$0.name})!
     }
     private func setColorPickerVisibility (isHidden: Bool){
         colorPreview.isHidden = isHidden
@@ -286,6 +295,8 @@ class AddViewController: UIViewController, UIPickerViewDataSource, UIPickerViewD
         default:
             break; 
         }
+        txfCategory.text = ""
+        txfSubcategory.text = ""
         updateListCategories()
         }
     @IBAction func reset(){
@@ -405,20 +416,5 @@ class AddViewController: UIViewController, UIPickerViewDataSource, UIPickerViewD
     }
 
 }
-extension UIViewController
-{
-    func hideKeyboard()
-    {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(UITableViewController.dismissKeyboard))
-        
-        view.addGestureRecognizer(tap)
-    }
-    
-    func dismissKeyboard()
-    {
-        view.endEditing(true)
-    }
-}
+
 
