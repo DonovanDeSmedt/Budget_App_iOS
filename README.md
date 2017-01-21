@@ -10,4 +10,4 @@ Run <code>pod install</code> om de dependencies te installeren. Open en run de a
 ##Preview
 ![alt tag](https://s24.postimg.org/nqueqn9qd/image.png "Tekstueel overzicht van de uitgaven voor de maand janauri 2017")
 ![alt tag](https://s24.postimg.org/vh16vsc1x/detail_View.png "Detailpagina met alle subcategorieën en bijhorende transacties van categorie 'Gambling'")
-![alt tag](https://s28.postimg.org/iwkp6xzwt/monthly_View.png "Grafisch overzicht van de uitgaven voor de maand januari 2017, weergeven in procent")
+![alt tag](https://s24.postimg.org/tqi5uauit/monthly_View.png "Grafisch overzicht van de uitgaven voor de maand januari 2017, weergeven in procent")
